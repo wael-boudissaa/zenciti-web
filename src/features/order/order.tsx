@@ -1,24 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/SideBar/SideBar";
 import Header from "../../components/Header/Header";
 import OrderStats from "./components/OrderStats";
 import OrderAnalytics from "./components/OrderAnalytics";
 import OrdersTable from "./components/OrderTables";
 import PopularItems from "./components/PopulaireItems";
+import { getRestaurantOrderInformation, type OrdersStatsResponse } from "./hooks/hoos_order_page";
 
-const OrdersPage: React.FC = () => (
-    <div className="font-sans bg-gray-100 text-gray-800 flex">
-        <Sidebar />
-        <div className="flex-1 overflow-y-auto">
-            <Header />
-            <div className="p-6">
-                <OrderStats />
-                <OrderAnalytics />
-                <OrdersTable />
-                <PopularItems />
+const OrdersPage: React.FC = () => {
+    const [loading, setLoading] = useState(true);
+    const [stats, setStats] = useState<OrdersStatsResponse | null>(null);
+
+    useEffect(() => {
+        async function fetchStats() {
+            setLoading(true);
+            try {
+                const response = await getRestaurantOrderInformation("c3b2a1d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d");
+                if (response) {
+                    setStats(response);
+                } else {
+                    console.error("Failed to fetch order stats");
+                }
+
+            } catch (e) {
+                console.error("Error fetching order stats:", e);
+            }
+            setLoading(false);
+        }
+        fetchStats();
+    }, []);
+    return (
+        <div className="font-sans bg-gray-100 text-gray-800 flex">
+            <Sidebar />
+            <div className="flex-1 overflow-y-auto">
+                <Header />
+                <div className="p-6">
+                    <OrderStats loading={loading} statusStats={stats?.statusStats} />
+                    <OrderAnalytics loading={loading} hourlyStats={stats?.hourlyStats} statusStats={stats?.statusStats} />
+                    <OrdersTable loading={loading} recentOrders={stats?.recentOrders || []} />
+                    <PopularItems />
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
+}
 
 export default OrdersPage;

@@ -16,7 +16,7 @@ const HomePage: React.FC = () => (
             <div className="p-6">
                 <StatsCards idRestaurant="d1c2b3a4-5e6f-7a8b-9c0d-1e2f3a4b5c7e" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <ReservationsChart idRestaurant="c3b2a1d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d" />
+                    <ReservationsChart idRestaurant="d1c2b3a4-5e6f-7a8b-9c0d-1e2f3a4b5c7e" />
                     <OccupancyChart />
                 </div>
                 <ReservationList idRestaurant="d1c2b3a4-5e6f-7a8b-9c0d-1e2f3a4b5c7e" />

@@ -1,22 +1,33 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
-const CustomerProfile: React.FC = () => {
-    const navigate = useNavigate();
+interface ProfileProps {
+    profile: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        address: string;
+        phone: string;
+    };
+    totalOrders: number;
+    totalSpent: number;
+    firstOrderDate: string;
+}
+
+const CustomerProfile: React.FC<ProfileProps> = ({ profile, totalOrders, totalSpent, firstOrderDate }) => {
     return (
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8" onClick={() => navigate('/order/customer')}>
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
             <div className="flex items-center">
                 <img className="h-16 w-16 rounded-full mr-6" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Customer Avatar" />
                 <div>
-                    <h2 className="text-2xl font-bold mb-1">Lindsey Stroud</h2>
+                    <h2 className="text-2xl font-bold mb-1">{profile.firstName} {profile.lastName}</h2>
                     <div className="flex items-center text-gray-500 space-x-4">
                         <div className="flex items-center">
                             <i className="fa-solid fa-envelope mr-2"></i>
-                            <span>lindsey.stroud@example.com</span>
+                            <span>{profile.email}</span>
                         </div>
                         <div className="flex items-center">
                             <i className="fa-solid fa-phone mr-2"></i>
-                            <span>(123) 456-7890</span>
+                            <span>{profile.phone}</span>
                         </div>
                     </div>
                 </div>
@@ -35,7 +46,7 @@ const CustomerProfile: React.FC = () => {
                         </div>
                         <h3 className="font-medium">Total Orders</h3>
                     </div>
-                    <p className="text-2xl font-bold">24</p>
+                    <p className="text-2xl font-bold">{totalOrders}</p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">
@@ -44,7 +55,7 @@ const CustomerProfile: React.FC = () => {
                         </div>
                         <h3 className="font-medium">Total Spent</h3>
                     </div>
-                    <p className="text-2xl font-bold">$1,248.50</p>
+                    <p className="text-2xl font-bold">${totalSpent.toFixed(2)}</p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">
@@ -53,7 +64,7 @@ const CustomerProfile: React.FC = () => {
                         </div>
                         <h3 className="font-medium">First Order</h3>
                     </div>
-                    <p className="text-lg font-medium">Jan 12, 2023</p>
+                    <p className="text-lg font-medium">{firstOrderDate ? (new Date(firstOrderDate)).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : "--"}</p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">

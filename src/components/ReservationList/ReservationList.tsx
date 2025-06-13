@@ -56,20 +56,23 @@ const ReservationList: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) =
     const [reservation, setReservation] = useState<ReservationListInformation[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    useEffect(() => {
-        console.log("Fetching: ", `/reservation/today/${idRestaurant}`);
-
+ useEffect(() => {
         setLoading(true);
         setError(null);
         getReservationOfToday(idRestaurant)
             .then(data => {
-                setReservation(Array.isArray(data) ? data : [data]);
+                let normalized: ReservationListInformation[] = [];
+                if (Array.isArray(data)) {
+                    normalized = data.filter(Boolean); // remove null/undefined
+                } else if (typeof data === "object" && data !== null) {
+                    normalized = [data];
+                }
+                setReservation(normalized);
             })
             .catch(err => {
                 setError(err.message || "Failed to fetch reservations");
             })
             .finally(() => setLoading(false));
-
     }, [idRestaurant]);
     return (
 

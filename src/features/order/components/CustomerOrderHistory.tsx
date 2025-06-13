@@ -1,63 +1,31 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
-const orders = [
-    {
-        id: "#ORD-7256",
-        date: "June 7, 2023",
-        time: "12:42 PM",
-        items: [
-            { name: "Grilled Salmon", qty: 2, price: "$24.99" },
-            { name: "Caesar Salad", qty: 1, price: "$12.50" },
-            { name: "Chocolate Lava Cake", qty: 1, price: "$8.99" },
-        ],
-        total: "$68.50",
-        status: "Processing",
-        statusClass: "bg-yellow-100 text-yellow-800",
-    },
-    {
-        id: "#ORD-7234",
-        date: "June 2, 2023",
-        time: "7:15 PM",
-        items: [
-            { name: "Beef Burger", qty: 1, price: "$15.99" },
-            { name: "French Fries", qty: 1, price: "$4.50" },
-            { name: "Soda", qty: 1, price: "$2.99" },
-        ],
-        total: "$23.48",
-        status: "Completed",
-        statusClass: "bg-green-100 text-green-800",
-    },
-    {
-        id: "#ORD-7209",
-        date: "May 28, 2023",
-        time: "1:30 PM",
-        items: [
-            { name: "Margherita Pizza", qty: 1, price: "$14.99" },
-            { name: "Garlic Bread", qty: 1, price: "$5.50" },
-            { name: "Tiramisu", qty: 1, price: "$7.99" },
-        ],
-        total: "$28.48",
-        status: "Completed",
-        statusClass: "bg-green-100 text-green-800",
-    },
-    {
-        id: "#ORD-7198",
-        date: "May 25, 2023",
-        time: "6:45 PM",
-        items: [
-            { name: "Pasta Carbonara", qty: 1, price: "$16.99" },
-            { name: "Bruschetta", qty: 1, price: "$7.50" },
-            { name: "Lemonade", qty: 1, price: "$3.99" },
-        ],
-        total: "$28.48",
-        status: "Cancelled",
-        statusClass: "bg-red-100 text-red-800",
-    },
-];
-const CustomerOrderHistory: React.FC = () => {
-    const navigate = useNavigate();
+type FoodItem = {
+    name: string;
+    priceSingle: number;
+    quantity: number;
+};
 
+type Order = {
+    idOrder: string;
+    createdAt: string;
+    status: string;
+    foodItems: FoodItem[];
+    totalPrice: number;
+};
+
+interface CustomerOrderHistoryProps {
+    orders: Order[];
+}
+
+const statusMap: Record<string, { text: string; statusClass: string }> = {
+    pending: { text: "Pending", statusClass: "bg-yellow-100 text-yellow-800" },
+    completed: { text: "Completed", statusClass: "bg-green-100 text-green-800" },
+    cancelled: { text: "Cancelled", statusClass: "bg-red-100 text-red-800" },
+    processing: { text: "Processing", statusClass: "bg-yellow-100 text-yellow-800" },
+};
+
+const CustomerOrderHistory: React.FC<CustomerOrderHistoryProps> = ({ orders }) => {
     return (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
             <div className="p-6 border-b">
@@ -91,30 +59,30 @@ const CustomerOrderHistory: React.FC = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                         {orders.map((o) => (
-                            <tr className="hover:bg-gray-50" key={o.id} onClick={() => navigate("/order/customer")}>
+                            <tr className="hover:bg-gray-50" key={o.idOrder}>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className="font-medium">{o.id}</span>
+                                    <span className="font-medium">#{o.idOrder.slice(0, 8).toUpperCase()}</span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                    {o.date}
+                                    {(new Date(o.createdAt)).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                                     <br />
-                                    <span className="text-gray-500">{o.time}</span>
+                                    <span className="text-gray-500">{(new Date(o.createdAt)).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}</span>
                                 </td>
                                 <td className="px-6 py-4">
-                                    {o.items.map((item, idx) => (
+                                    {o.foodItems.map((item, idx) => (
                                         <div key={idx} className={idx > 0 ? "mt-2" : ""}>
                                             <p className="font-medium">{item.name}</p>
                                             <p className="text-sm text-gray-500">
-                                                {item.qty}x {item.price}
+                                                {item.quantity}x ${item.priceSingle}
                                             </p>
                                         </div>
                                     ))}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    {o.total}
+                                    ${o.totalPrice.toFixed(2)}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className={`px-2 py-1 text-xs rounded-full ${o.statusClass}`}>{o.status}</span>
+                                    <span className={`px-2 py-1 text-xs rounded-full ${statusMap[o.status]?.statusClass || "bg-gray-200 text-gray-800"}`}>{statusMap[o.status]?.text || o.status}</span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                                     <div className="flex space-x-2">
@@ -128,20 +96,7 @@ const CustomerOrderHistory: React.FC = () => {
                     </tbody>
                 </table>
             </div>
-            <div className="px-6 py-4 border-t flex items-center justify-between">
-                <p className="text-sm text-gray-600">Showing 4 of 24 orders</p>
-                <div className="flex space-x-1">
-                    <button className="px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200">
-                        <i className="fa-solid fa-chevron-left text-xs"></i>
-                    </button>
-                    <button className="px-3 py-1 rounded bg-green-900 text-white">1</button>
-                    <button className="px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200">2</button>
-                    <button className="px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200">3</button>
-                    <button className="px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200">
-                        <i className="fa-solid fa-chevron-right text-xs"></i>
-                    </button>
-                </div>
-            </div>
+            {/* Pagination can be implemented here */}
         </div>
     );
 }

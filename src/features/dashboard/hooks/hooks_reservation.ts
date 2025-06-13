@@ -4,12 +4,12 @@ import { apiGet } from "../../../api/api";
 
 // Define types as needed
 export type ReservationListInformation = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    address: string;
-    numberOfPeople: number;
-    status: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    address?: string;
+    numberOfPeople?: number;
+    status?: string;
 };
 
 export type DashboardCount = {
