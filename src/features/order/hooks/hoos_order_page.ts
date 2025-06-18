@@ -8,6 +8,7 @@ export interface RecentOrder {
   idOrder: string;
   idClient:string;
   firstName: string;
+  timeFrom :string ;
   lastName: string;
   createdAt: string;
   itemCount: number;

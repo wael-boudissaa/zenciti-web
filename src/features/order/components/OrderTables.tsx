@@ -59,7 +59,7 @@ const OrdersTable: React.FC<Props> = ({ loading, recentOrders }) => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">{o.firstName} {o.lastName}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                        {new Date(o.createdAt).toLocaleDateString()}<br />
+                                        {new Date(o.timeFrom).toLocaleDateString()}<br />
                                         <span className="text-gray-500">{new Date(o.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
