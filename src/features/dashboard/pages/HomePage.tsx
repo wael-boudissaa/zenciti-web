@@ -10,19 +10,19 @@ import { useAuth } from "../../../app/context";
 
 
 const HomePage: React.FC = () => {
-    const { user } = useAuth();
+    const { idRestaurant } = useAuth();
     return (
         <div className="font-sans bg-gray-100 text-gray-800 flex min-h-screen">
             <Sidebar />
             <div className="flex-1 overflow-y-auto">
                 <Header />
                 <div className="p-6">
-                    <StatsCards idRestaurant={user.idRestaurant} />
+                    <StatsCards idRestaurant={idRestaurant} />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <ReservationsChart idRestaurant={user?.idRestaurant} />
+                        <ReservationsChart idRestaurant={idRestaurant} />
                         <OccupancyChart />
                     </div>
-                    <ReservationList idRestaurant={user?.idRestaurant} />
+                    <ReservationList idRestaurant={idRestaurant} />
                     <TableAvailability />
                 </div>
             </div>

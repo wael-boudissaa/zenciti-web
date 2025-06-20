@@ -5,15 +5,16 @@ import { SignInCard } from "./components/SignInCard";
 import type { Data, User } from "./hooks/hooks";
 
 type SignInPageProps = {
-    onLogin: (user: User, token: string) => void;
+    onLogin: (user: User, token: string, idRestaurant: string) => void;
 };
 const SignInPage: React.FC<SignInPageProps> = ({ onLogin }) => {
     const navigate = useNavigate();
 
     const handleSignInSuccess = (response: Data) => {
         localStorage.setItem("token", response.token);
+        localStorage.setItem("idRestaurant", response.user.idRestaurant.toString());
         console.log("Sign-in successful:", response);
-        onLogin(response.user, response.token);
+        onLogin(response.user, response.token, response.user.idRestaurant.toString());
         navigate("/");
     };
 

@@ -37,6 +37,23 @@ export type StaffMember = {
     address: string;
     status: "active" | "inactive" | "on leave";
 }
+export type MonthlyRatingStats = {
+    month: number;
+    year: number;
+    averageRating: number;
+    totalRatings: number;
+};
+
+export type RestaurantRatingStats = {
+    monthlyStats: MonthlyRatingStats[];
+    overallAverage: number;
+    totalRatings: number;
+    percentage5Stars: number;
+    percentage4Stars: number;
+    percentage3Stars: number;
+    percentage2Stars: number;
+    percentage1Star: number;
+};
 
 
 export function getRestaurantInformation(idRestaurant: string) {
@@ -50,4 +67,8 @@ export function getRecentReviews(idRestaurant: string) {
 
 export function getRestaurantStaff(idRestaurant: string) {
     return apiGet<StaffMember[]>(`/restaurant/workers/${idRestaurant}`);
+}
+
+export function getRestaurantStats(idRestaurant: string) {
+    return apiGet<RestaurantRatingStats>(`/restaurant/stats/${idRestaurant}`);
 }

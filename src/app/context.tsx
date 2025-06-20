@@ -2,14 +2,17 @@ import React, { type JSX } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import SignInPage from "../features/auth/sign_in";
 import type { User } from "../features/auth/hooks/hooks";
+import { getRestaurantInformationUsingToken } from "./hooks";
 
 type AuthContextType = {
     isAuthenticated: boolean;
     user: User | null;
+    idRestaurant: string | null;
     token: string | null;
-    login: (user: User, token: string) => void;
+    login: (user: User, token: string, idRestaurant: string) => void;
     logout: () => void;
 };
+
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
 export function useAuth() {
@@ -21,31 +24,70 @@ export function useAuth() {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = React.useState<User | null>(null);
     const [token, setToken] = React.useState<string | null>(null);
-    const [isAuthenticated, setIsAuthenticated] = React.useState(
+    const [idRestaurant, setIdRestaurant] = React.useState<string | null>(null);
+    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
-        !!localStorage.getItem("token")
-    );
+    React.useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        const storedIdRestaurant = localStorage.getItem("idRestaurant");
 
-    const login = React.useCallback((user: User, token: string) => {
+        if (storedToken && storedIdRestaurant) {
+            setToken(storedToken);
+            setIdRestaurant(storedIdRestaurant);
+            setIsAuthenticated(true);
+
+            // Fetch the user profile from API using the token and set user state
+            getRestaurantInformationUsingToken(storedToken)
+                .then((userData) => {
+                    setUser(userData);
+                })
+                .catch(() => {
+                    // If fetching fails, clear auth state and storage
+                    setUser(null);
+                    setIsAuthenticated(false);
+                    setToken(null);
+                    setIdRestaurant(null);
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("idRestaurant");
+                });
+        }
+    }, []);
+    const login = React.useCallback((user: User, token: string, idRestaurant: string) => {
         setUser(user);
+        setIdRestaurant(idRestaurant);
         setToken(token);
         setIsAuthenticated(true);
+
+        // Only persist what's needed for session restoration
+        localStorage.setItem("token", token);
+        localStorage.setItem("idRestaurant", idRestaurant);
     }, []);
+
     const logout = React.useCallback(() => {
+        setUser(null);
+        setIdRestaurant(null);
+        setToken(null);
         setIsAuthenticated(false);
+
         localStorage.removeItem("token");
+        localStorage.removeItem("idRestaurant");
     }, []);
+
     return (
-        <AuthContext.Provider value={{ isAuthenticated, user, token, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, user, idRestaurant, token, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
 export function ProtectedRoute({ children }: { children: JSX.Element }) {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user, idRestaurant } = useAuth();
     const location = useLocation();
-    if (!isAuthenticated) {
+
+    // Note: If you want to allow session restoration after refresh, you may want to relax this check:
+    // For example, only require isAuthenticated and idRestaurant, not user, 
+    // or fetch user profile (see comment in useEffect above).
+    if (!isAuthenticated || !idRestaurant) {
         return <Navigate to="/signin" state={{ from: location }} replace />;
     }
     return children;
@@ -61,4 +103,3 @@ export function SignInRoute() {
     }
     return <SignInPage onLogin={login} />;
 }
-
