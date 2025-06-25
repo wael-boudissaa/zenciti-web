@@ -54,6 +54,42 @@ export type RestaurantRatingStats = {
     percentage2Stars: number;
     percentage1Star: number;
 };
+export type Menu = {
+    idMenu: string;
+    idRestaurant: string;
+    name: string;
+    active: boolean;
+    createdAt: string;
+}
+
+export type FoodCategory = {
+    idCategory: string;
+    nameCategorie: string;
+}
+export type FoodByMenu = {
+    idFood: string;
+    name: string;
+    description: string;
+    idMenu: string;
+    price: number;
+    image: string;
+    status: "available" | "unavailable";
+    idCategory: string; // Assuming category is a string, adjust if it's an object
+}
+export type MenuStats = {
+    totalMenus: number;
+    activeMenuName: string;
+    totalItems: number;
+    totalCategories: number;
+    availableFoods: number;
+    unavailableFoods: number;
+    popularFoods: PopularFood[];
+}
+export type PopularFood = {
+    foodName: string;
+    orderCount: number;
+
+}
 
 
 export function getRestaurantInformation(idRestaurant: string) {
@@ -71,4 +107,23 @@ export function getRestaurantStaff(idRestaurant: string) {
 
 export function getRestaurantStats(idRestaurant: string) {
     return apiGet<RestaurantRatingStats>(`/restaurant/stats/${idRestaurant}`);
+}
+
+export function getMenuRestaurant(idRestaurant: string) {
+    return apiGet<Menu[]>(`/menu/restaurant/${idRestaurant}`);
+}
+
+export function getCategoryFoodOfRestaurant(idRestaurant: string) {
+    return apiGet<FoodCategory[]>(`/food/category/${idRestaurant}`);
+}
+
+export function getFoodByMenu(idMenu: string) {
+    return apiGet<FoodByMenu[]>(`/food/${idMenu}`); // Adjust the type as needed
+}
+
+export function getFoodOfMenuActive(idRestaurant: string) {
+    return apiGet<FoodByMenu[]>(`/food/active/${idRestaurant}`); // Adjust the type as needed
+}
+export function getMenuStats(idRestaurant: string) {
+    return apiGet<MenuStats>(`/restaurant/menu/stats/${idRestaurant}`);
 }

@@ -9,6 +9,7 @@ import { getDashboardCount } from "../../features/dashboard/hooks/hooks_reservat
 const StatsCards: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) => {
     const [orderCount, setOrderCount] = React.useState(0);
     const [reservationCount, setReservationCount] = React.useState(0);
+    const [firstTimeUsers, setFirstTimeUsers] = React.useState(0);
     // count[loading, setLoading] = React.useState(true);
     // count[error, setError] = React.useState<string | null>(null);
     //
@@ -18,6 +19,7 @@ const StatsCards: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) => {
             if (result) {
                 setOrderCount(result.numberOrders);
                 setReservationCount(result.numberReservation);
+                setFirstTimeUsers(result.firstTimeUsers);
             } else {
                 console.error("Failed to fetch dashboard count");
             }
@@ -47,7 +49,7 @@ const StatsCards: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) => {
         {
             icon: faUsers,
             label: "New customers this month",
-            value:  300 ,
+            value: firstTimeUsers,
             goal: 500,
             goalLabel: "customers",
             progress: 70,
@@ -70,7 +72,7 @@ const StatsCards: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) => {
                     <div className="mt-auto">
                         <p className="text-sm font-medium mb-2">Goal: {stat.goal} {stat.goalLabel}</p>
                         <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-                            <div className="bg-green-900 h-full rounded-full" style={{ width: `${(stat.value*100)/stat.goal}%` }}></div>
+                            <div className="bg-green-900 h-full rounded-full" style={{ width: `${(stat.value * 100) / stat.goal}%` }}></div>
                         </div>
                     </div>
                 </div>

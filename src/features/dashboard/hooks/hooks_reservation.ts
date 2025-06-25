@@ -15,6 +15,7 @@ export type ReservationListInformation = {
 export type DashboardCount = {
     numberReservation: number;
     numberOrders: number;
+    firstTimeUsers: number;
 
 }
 export type ReservationLastMonth = {
@@ -22,6 +23,13 @@ export type ReservationLastMonth = {
     reservations: number;
 };
 
+
+export type TableAvailabilityToday = {
+    idTable: string;
+    occupied: boolean;
+    timeSlots: string[];
+
+}
 export function getReservationOfToday(idRestaurant: string) {
     return apiGet<ReservationListInformation>(`/reservation/today/${idRestaurant}`);
 }
@@ -32,6 +40,9 @@ export function getDashboardCount(idRestaurant: string) {
 
 export function getReservationLastMonth(idRestaurant: string) {
     return apiGet<ReservationLastMonth[]>(`/reservation/month/${idRestaurant}`);
+}
+export function getTableAvaiabilityToday(idRestaurant: string) {
+    return apiGet<TableAvailabilityToday[]>(`/restaurant/tables/occupany/today/${idRestaurant}`);
 }
 
 

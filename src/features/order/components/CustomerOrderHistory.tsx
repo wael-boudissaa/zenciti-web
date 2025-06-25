@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 type FoodItem = {
     name: string;
@@ -26,6 +27,7 @@ const statusMap: Record<string, { text: string; statusClass: string }> = {
 };
 
 const CustomerOrderHistory: React.FC<CustomerOrderHistoryProps> = ({ orders }) => {
+    const navigate = useNavigate();
     return (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
             <div className="p-6 border-b">
@@ -59,7 +61,7 @@ const CustomerOrderHistory: React.FC<CustomerOrderHistoryProps> = ({ orders }) =
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                         {orders.map((o) => (
-                            <tr className="hover:bg-gray-50" key={o.idOrder}>
+                            <tr className="hover:bg-gray-50" key={o.idOrder} onClick={() => { navigate(`/order/customer`) }}>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <span className="font-medium">#{o.idOrder.slice(0, 8).toUpperCase()}</span>
                                 </td>

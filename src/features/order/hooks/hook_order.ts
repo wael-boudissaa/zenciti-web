@@ -13,6 +13,12 @@ export interface Order {
     foodItems: FoodItem[];
     totalPrice: number;
 }
+export type PopulaireFood = {
+    idFood: string;
+    name: string;
+    image: string;
+    total: number;
+}
 
 export interface Profile {
     idProfile: string;
@@ -37,4 +43,7 @@ export interface CustomerOrderInformationResponse {
 }
 export function getCustomerOrderInformation(idClient: string) {
     return apiGet<CustomerOrderInformation>(`/waela/${idClient}`);
+}
+export function getPopularFood(idRestaurant: string) {
+    return apiGet<PopulaireFood[]>(`/restaurant/food/populair/${idRestaurant}`);
 }

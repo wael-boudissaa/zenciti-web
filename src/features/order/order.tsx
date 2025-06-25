@@ -6,16 +6,18 @@ import OrderAnalytics from "./components/OrderAnalytics";
 import OrdersTable from "./components/OrderTables";
 import PopularItems from "./components/PopulaireItems";
 import { getRestaurantOrderInformation, type OrdersStatsResponse } from "./hooks/hoos_order_page";
+import { useAuth } from "../../app/context";
 
 const OrdersPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState<OrdersStatsResponse | null>(null);
+    const { idRestaurant } = useAuth();
 
     useEffect(() => {
         async function fetchStats() {
             setLoading(true);
             try {
-                const response = await getRestaurantOrderInformation("c3b2a1d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d");
+                const response = await getRestaurantOrderInformation(idRestaurant);
                 if (response) {
                     setStats(response);
                 } else {
@@ -38,7 +40,7 @@ const OrdersPage: React.FC = () => {
                     <OrderStats loading={loading} statusStats={stats?.statusStats} />
                     <OrderAnalytics loading={loading} hourlyStats={stats?.hourlyStats} statusStats={stats?.statusStats} />
                     <OrdersTable loading={loading} recentOrders={stats?.recentOrders || []} />
-                    <PopularItems />
+                    <PopularItems idRestaurant={idRestaurant} />
                 </div>
             </div>
         </div>

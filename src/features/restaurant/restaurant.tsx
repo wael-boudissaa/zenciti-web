@@ -8,6 +8,8 @@ import { RestaurantStatsSidebar } from "./components/RestaurantStatsSideBar";
 import { StaffSection } from "./components/StaffSection";
 import { useAuth } from "../../app/context";
 import { getRestaurantStaff, getRestaurantStats, type RestaurantRatingStats, type StaffMember } from "./hooks/hooks";
+import RestaurantMenuPage from "./restaurantMenuPage";
+import StaffPage from "./staff";
 
 
 const RestaurantProfilePage: React.FC = () => {
@@ -70,6 +72,8 @@ const RestaurantProfilePage: React.FC = () => {
                         <RestaurantStatsSidebar restaurantStats={restaurantStats} staffRows={staffRows} loading={loading} error={error} />
                     </div>}
                     {selectedTab == "Profile" && <StaffSection staffRows={staffRows} loading={loading} error={error} />}
+                    {selectedTab == "Menu" && <RestaurantMenuPage idRestaurant={idRestaurant}/>}
+                    {selectedTab == "Staff" && <StaffPage idRestaurant={idRestaurant} />}
                 </div>
             </div>
         </div>

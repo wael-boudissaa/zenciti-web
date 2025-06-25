@@ -23,7 +23,7 @@ const HomePage: React.FC = () => {
                         <OccupancyChart />
                     </div>
                     <ReservationList idRestaurant={idRestaurant} />
-                    <TableAvailability />
+                    <TableAvailability idRestaurant={idRestaurant} />
                 </div>
             </div>
         </div>
