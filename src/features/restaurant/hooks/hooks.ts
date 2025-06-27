@@ -1,4 +1,4 @@
-import { apiGet } from "../../../api/api";
+import { apiGet, apiPost, apiPut } from "../../../api/api";
 
 type RestaurantInformation = {
 
@@ -126,4 +126,28 @@ export function getFoodOfMenuActive(idRestaurant: string) {
 }
 export function getMenuStats(idRestaurant: string) {
     return apiGet<MenuStats>(`/restaurant/menu/stats/${idRestaurant}`);
+}
+export function onCreateMenu(idRestaurant: string, name: string) {
+    return apiPost<any>(`/menu`, { name, idRestaurant });
+}
+export function getFoodOfRestaurant(idRestaurant: string) {
+    return apiGet<FoodByMenu[]>(`/restaurant/food/${idRestaurant}`); // Adjust the type as needed
+}
+
+export function addFoodToMenu(idMenu: string, idFood: string) {
+    return apiPost<any>(`/restaurant/addfood/${idMenu}`, { idFood });
+}
+
+export function setFoodUnavailable(idFood: string) {
+    return apiPut(`/food/${idFood}/status`, { status: "unavailable" })
+}
+export function setFoodAvailable(idFood: string) {
+    return apiPut(`/food/${idFood}/status`, { status: "available" })
+}
+
+
+export async function createRestaurantWorker(idRestaurant: string, formData: FormData) {
+    return apiPost(`/restaurant/worker/${idRestaurant}`, formData, {
+        // do not set headers here
+    });
 }

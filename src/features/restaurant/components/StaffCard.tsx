@@ -13,7 +13,8 @@ const StaffCard = ({ staff, onViewReview }) => (
             <div className="relative">
                 <img
                     src={
-                        staff.avatar ||
+                        staff.image
+                        ||
                         `https://ui-avatars.com/api/?name=${encodeURIComponent(
                             staff.firstName + " " + staff.lastName
                         )}&background=E6F4F1&color=00674B`

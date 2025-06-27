@@ -72,7 +72,7 @@ const RestaurantProfilePage: React.FC = () => {
                         <RestaurantStatsSidebar restaurantStats={restaurantStats} staffRows={staffRows} loading={loading} error={error} />
                     </div>}
                     {selectedTab == "Profile" && <StaffSection staffRows={staffRows} loading={loading} error={error} />}
-                    {selectedTab == "Menu" && <RestaurantMenuPage idRestaurant={idRestaurant}/>}
+                    {selectedTab == "Menu" && <RestaurantMenuPage idRestaurant={idRestaurant} />}
                     {selectedTab == "Staff" && <StaffPage idRestaurant={idRestaurant} />}
                 </div>
             </div>

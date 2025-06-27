@@ -43,13 +43,24 @@ export async function apiPost<T, U = unknown>(
     data?: U,
     options?: Options
 ): Promise<T> {
-    const result = await request<ApiResponse<T>>(url, {
+    const isFormData = typeof FormData !== "undefined" && data instanceof FormData;
+
+    const reqOptions = {
         method: "POST",
-        headers: getHeaders(options?.headers),
-        body: data ? JSON.stringify(data) : undefined,
         ...options,
-    });
+        headers: isFormData
+            ? options?.headers // do NOT set headers for FormData, let browser do it!
+            : getHeaders(options?.headers),
+        body: isFormData
+            ? data as FormData
+            : data
+                ? JSON.stringify(data)
+                : undefined,
+    };
+
+    const result = await request<ApiResponse<T>>(url, reqOptions);
     return result.data;
+
 }
 
 // PUT: expects ApiResponse<T> from backend, returns just .data

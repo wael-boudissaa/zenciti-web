@@ -1,12 +1,28 @@
 import React, { useState } from "react";
+import { setFoodUnavailable, setFoodAvailable } from "../hooks/hooks"; // Ensure setFoodAvailable exists
 
-export const ActiveMenuContent = ({ activeMenu }) => {
+export const ActiveMenuContent = ({ activeMenu, onEditMenu, onStatusChange }) => {
     const [selectedCategory, setSelectedCategory] = useState("All Items");
+    const [updating, setUpdating] = useState<string | null>(null);
 
     const filteredItems =
         selectedCategory === "All Items"
             ? activeMenu.items
             : activeMenu.items.filter((item) => item.category === selectedCategory);
+
+    const handleSetUnavailable = async (idFood) => {
+        setUpdating(idFood);
+        await setFoodUnavailable(idFood);
+        if (onStatusChange) onStatusChange();
+        setUpdating(null);
+    };
+
+    const handleSetAvailable = async (idFood) => {
+        setUpdating(idFood);
+        await setFoodAvailable(idFood);
+        if (onStatusChange) onStatusChange();
+        setUpdating(null);
+    };
 
     return (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -19,21 +35,20 @@ export const ActiveMenuContent = ({ activeMenu }) => {
                     <button className="px-4 py-2 bg-accent text-white rounded-lg text-sm">
                         <i className="fa-solid fa-plus mr-1"></i> Add Item
                     </button>
-                    <button className="px-4 py-2 bg-green-900 text-white rounded-lg text-sm">
+                    <button className="px-4 py-2 bg-green-900 text-white rounded-lg text-sm" onClick={onEditMenu}>
                         <i className="fa-solid fa-pen-to-square mr-1"></i> Edit Menu
                     </button>
                 </div>
             </div>
             <div className="p-6">
-                {/* Menu Categories Tabs */}
                 <div id="menu-categories" className="mb-6">
                     <div className="flex space-x-2 overflow-x-auto pb-2">
                         {activeMenu.categories.map((cat) => (
                             <button
                                 key={cat}
                                 className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${selectedCategory === cat
-                                        ? "bg-green-900 text-white"
-                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                    ? "bg-green-900 text-white"
+                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                     }`}
                                 onClick={() => setSelectedCategory(cat)}
                             >
@@ -42,11 +57,10 @@ export const ActiveMenuContent = ({ activeMenu }) => {
                         ))}
                     </div>
                 </div>
-                {/* Menu Items */}
                 <div id="menu-items" className="space-y-4">
                     {filteredItems.map((item, idx) => (
                         <div
-                            key={idx}
+                            key={item.idFood}
                             className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition duration-150"
                         >
                             <div className="flex">
@@ -69,9 +83,25 @@ export const ActiveMenuContent = ({ activeMenu }) => {
                                             <button className="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 rounded text-sm hover:bg-gray-50">
                                                 <i className="fa-solid fa-pen-to-square mr-1"></i> Edit
                                             </button>
-                                            <button className="px-3 py-1.5 bg-white border border-gray-300 text-red-500 rounded text-sm hover:bg-gray-50">
-                                                <i className="fa-solid fa-trash mr-1"></i> Remove
-                                            </button>
+                                            {item.status === "Available" ? (
+                                                <button
+                                                    className="px-3 py-1.5 bg-white border border-gray-300 text-red-500 rounded text-sm hover:bg-gray-50"
+                                                    onClick={() => handleSetUnavailable(item.idFood)}
+                                                    disabled={updating === item.idFood}
+                                                >
+                                                    <i className="fa fa-ban" aria-hidden="true"></i>{" "}
+                                                    {updating === item.idFood ? "Updating..." : "Unavailable"}
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    className="px-3 py-1.5 bg-white border border-gray-300 text-green-600 rounded text-sm hover:bg-gray-50"
+                                                    onClick={() => handleSetAvailable(item.idFood)}
+                                                    disabled={updating === item.idFood}
+                                                >
+                                                    <i className="fa fa-check-circle" aria-hidden="true"></i>{" "}
+                                                    {updating === item.idFood ? "Updating..." : "Available"}
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                     <p className="text-sm text-gray-600 mb-2">{item.desc}</p>

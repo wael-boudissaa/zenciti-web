@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import StaffGrid from "./components/StaffGrid";
 import AddStaffModal from "./components/AddStaffModel";
 import StaffReviewModal from "./components/StaffReviewModel";
-import { getRestaurantStaff } from "./hooks/hooks";
+import { createRestaurantWorker, getRestaurantStaff } from "./hooks/hooks";
 
 const StaffPage = ({ idRestaurant }) => {
     const [staffRows, setStaffRows] = useState([]);
@@ -14,6 +14,11 @@ const StaffPage = ({ idRestaurant }) => {
     const [selectedStaff, setSelectedStaff] = useState(null);
 
     useEffect(() => {
+        fetchStaff();
+        // eslint-disable-next-line
+    }, [idRestaurant]);
+
+    const fetchStaff = () => {
         setLoading(true);
         getRestaurantStaff(idRestaurant)
             .then((res) => {
@@ -24,11 +29,16 @@ const StaffPage = ({ idRestaurant }) => {
                 setError("Failed to load staff list.");
                 setLoading(false);
             });
-    }, [idRestaurant]);
+    };
 
     const handleViewReview = (staff) => {
         setSelectedStaff(staff);
         setReviewModalOpen(true);
+    };
+
+    const handleAddStaff = async (formData) => {
+        await createRestaurantWorker(idRestaurant, formData);
+        fetchStaff();
     };
 
     if (loading) {
@@ -60,7 +70,7 @@ const StaffPage = ({ idRestaurant }) => {
 
             <StaffGrid staffList={staffRows} onViewReview={handleViewReview} />
 
-            <AddStaffModal open={addModalOpen} onClose={() => setAddModalOpen(false)} />
+            <AddStaffModal open={addModalOpen} onClose={() => setAddModalOpen(false)} onSubmit={handleAddStaff} />
             <StaffReviewModal open={reviewModalOpen} onClose={() => setReviewModalOpen(false)} staff={selectedStaff} />
         </div>
     );

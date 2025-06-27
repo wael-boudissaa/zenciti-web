@@ -7,25 +7,26 @@ import {
     getCategoryFoodOfRestaurant,
     getMenuRestaurant,
     getFoodOfMenuActive,
-    getFoodByMenu
+    getFoodByMenu,
 } from "./hooks/hooks";
+import type {
+    FoodByMenu, Menu, FoodCategory,
+} from "./hooks/hooks";
+import { EditMenuModal } from "./components/EditMenu";
 
-// Main Restaurant Menu Page
 const RestaurantMenuPage = ({ idRestaurant }) => {
     const [showCreateMenuModal, setShowCreateMenuModal] = useState(false);
-
-    const [menus, setMenus] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [activeMenu, setActiveMenu] = useState(null);
-    const [inactiveMenus, setInactiveMenus] = useState([]);
+    const [menus, setMenus] = useState<Menu[]>([]);
+    const [categories, setCategories] = useState<FoodCategory[] | null>([]);
+    const [activeMenu, setActiveMenu] = useState<Menu | null>(null);
+    const [inactiveMenus, setInactiveMenus] = useState<Menu[]>([]);
     const [loading, setLoading] = useState(true);
-
-    // The currently viewed menu (id), not just the active one
-    const [viewedMenu, setViewedMenu] = useState(null);
-    const [viewedMenuFoods, setViewedMenuFoods] = useState([]);
+    const [showEditMenuModal, setShowEditMenuModal] = useState(false);
+    const [editingMenu, setEditingMenu] = useState<Menu | null>(null);
+    const [viewedMenu, setViewedMenu] = useState<Menu | null>(null);
+    const [viewedMenuFoods, setViewedMenuFoods] = useState<FoodByMenu[] | null>([]);
     const [foodLoading, setFoodLoading] = useState(false);
 
-    // Fetch menus and categories
     useEffect(() => {
         setLoading(true);
         Promise.all([
@@ -35,44 +36,38 @@ const RestaurantMenuPage = ({ idRestaurant }) => {
             .then(([menusRes, categoriesRes]) => {
                 const menusData = menusRes || [];
                 const categoriesData = categoriesRes || [];
-
                 setMenus(menusData);
                 setCategories(categoriesData);
-
-                // Find active menu and group inactives
                 const active = menusData.find((m) => m.active);
                 setActiveMenu(active || null);
                 setInactiveMenus(menusData.filter((m) => !m.active));
-
-                // By default, view the active menu
                 setViewedMenu(active || null);
-
                 setLoading(false);
             })
             .catch(() => setLoading(false));
     }, [idRestaurant]);
 
-    // Fetch foods for the *viewed* menu (active or chosen inactive)
-    useEffect(() => {
+    const refreshViewedMenuFoods = () => {
         if (!viewedMenu) {
             setViewedMenuFoods([]);
             return;
         }
         setFoodLoading(true);
-
         const fetchFoods = viewedMenu.active
             ? getFoodOfMenuActive(idRestaurant)
             : getFoodByMenu(viewedMenu.idMenu);
-
         fetchFoods
             .then((foods) => {
                 setViewedMenuFoods(foods || []);
                 setFoodLoading(false);
             })
             .catch(() => setFoodLoading(false));
+    };
+
+    useEffect(() => {
+        refreshViewedMenuFoods();
     }, [idRestaurant, viewedMenu]);
 
-    // Prepare data for MenuList (pass handlers for view)
     const inactiveMenusData = inactiveMenus.map((menu) => ({
         name: menu.name,
         lastActive: menu.createdAt
@@ -82,7 +77,6 @@ const RestaurantMenuPage = ({ idRestaurant }) => {
         menuObj: menu,
     }));
 
-    // Prepare data for ActiveMenuContent (for the viewed menu)
     const viewedMenuData =
         viewedMenu &&
             categories &&
@@ -97,6 +91,7 @@ const RestaurantMenuPage = ({ idRestaurant }) => {
                     ...categories.map((c) => c.nameCategorie),
                 ],
                 items: viewedMenuFoods.map((item) => ({
+                    idFood: item.idFood,
                     name: item.name,
                     desc: item.description,
                     category:
@@ -151,13 +146,33 @@ const RestaurantMenuPage = ({ idRestaurant }) => {
                             Loading menu items...
                         </div>
                     ) : (
-                        <ActiveMenuContent activeMenu={viewedMenuData} />
-                    ))}
+                        <ActiveMenuContent
+                            activeMenu={viewedMenuData}
+                            onEditMenu={() => {
+                                setEditingMenu(viewedMenu);
+                                setShowEditMenuModal(true);
+                            }}
+                            onStatusChange={refreshViewedMenuFoods}
+                        />
+                    )
+                    )}
             </div>
             <MenuStatsSidebar idRestaurant={idRestaurant} />
             <CreateMenuModal
                 open={showCreateMenuModal}
                 onClose={() => setShowCreateMenuModal(false)}
+                idRestaurant={idRestaurant}
+            />
+            <EditMenuModal
+                open={showEditMenuModal}
+                onClose={() => setShowEditMenuModal(false)}
+                idRestaurant={idRestaurant}
+                menu={editingMenu}
+                onFoodAdded={() => {
+                    if (editingMenu) {
+                        getFoodByMenu(editingMenu.idMenu).then((foods) => setViewedMenuFoods(foods || []));
+                    }
+                }}
             />
         </div>
     );
