@@ -1,3 +1,6 @@
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
 const BASE_URL = "http://localhost:8080";
 
 export type ApiResponse<T> = {
@@ -17,14 +20,21 @@ function getHeaders(headers?: Record<string, string>) {
     };
 }
 
-// General fetch wrapper
+// General fetch wrapper with error toast
 async function request<T>(url: string, options: RequestInit): Promise<T> {
-    const res = await fetch(BASE_URL + url, options);
-    if (!res.ok) {
-        throw new Error((await res.text()) || `Request failed: ${res.status}`);
+    try {
+        const res = await fetch(BASE_URL + url, options);
+        if (!res.ok) {
+            const errorText = await res.text();
+            toast.error(errorText || `Request failed: ${res.status}`);
+            throw new Error(errorText || `Request failed: ${res.status}`);
+        }
+        if (res.status === 204) return null as unknown as T;
+        return res.json();
+    } catch (error: any) {
+        toast.error(error?.message || "Unknown error occurred");
+        throw error;
     }
-    if (res.status === 204) return null as unknown as T;
-    return res.json();
 }
 
 // GET: always expects an ApiResponse<T> from backend, returns just .data
@@ -60,7 +70,6 @@ export async function apiPost<T, U = unknown>(
 
     const result = await request<ApiResponse<T>>(url, reqOptions);
     return result.data;
-
 }
 
 // PUT: expects ApiResponse<T> from backend, returns just .data

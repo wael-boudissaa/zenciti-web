@@ -42,15 +42,12 @@ export const MenuList = ({
                             <div className="flex space-x-2">
                                 <button
                                     className={`px-3 py-1.5 bg-white border border-gray-300 rounded text-sm hover:bg-gray-50 ${viewedMenuId === activeMenu.idMenu
-                                            ? "font-bold text-green-900 border-green-900"
-                                            : "text-gray-700"
+                                        ? "font-bold text-green-900 border-green-900"
+                                        : "text-gray-700"
                                         }`}
                                     onClick={() => onViewMenu(activeMenu.menuObj || activeMenu)}
                                 >
                                     <i className="fa-solid fa-eye mr-1"></i> View
-                                </button>
-                                <button className="px-3 py-1.5 bg-green-900 text-white rounded text-sm hover:bg-green-900/90">
-                                    <i className="fa-solid fa-pen-to-square mr-1"></i> Edit
                                 </button>
                             </div>
                         </div>
@@ -82,19 +79,19 @@ export const MenuList = ({
                                 <div className="flex space-x-2">
                                     <button
                                         className={`px-3 py-1.5 bg-white border border-gray-300 rounded text-sm hover:bg-gray-50 ${viewedMenuId === menu.idMenu
-                                                ? "font-bold text-green-900 border-green-900"
-                                                : "text-gray-700"
+                                            ? "font-bold text-green-900 border-green-900"
+                                            : "text-gray-700"
                                             }`}
                                         onClick={() => onViewMenu(menu.menuObj || menu)}
                                     >
                                         <i className="fa-solid fa-eye mr-1"></i> View
                                     </button>
-                                    <button className="px-3 py-1.5 bg-accent text-white rounded text-sm hover:bg-accent/90">
+                                    <button className="px-3 py-1.5 bg-green-900 text-white rounded text-sm hover:bg-accent/90">
                                         <i className="fa-solid fa-check mr-1"></i> Activate
                                     </button>
-                                    <button className="px-2 py-1.5 bg-white border border-gray-300 text-gray-700 rounded text-sm hover:bg-gray-50">
-                                        <i className="fa-solid fa-ellipsis-vertical"></i>
-                                    </button>
+                                    {/* <button className="px-2 py-1.5 bg-white border border-gray-300 text-gray-700 rounded text-sm hover:bg-gray-50"> */}
+                                    {/*     <i className="fa-solid fa-ellipsis-vertical"></i> */}
+                                    {/* </button> */}
                                 </div>
                             </div>
                         </div>

@@ -1,7 +1,6 @@
 import { useAuth } from "../../app/context";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/SideBar/SideBar";
-import QuickActionsSection from "./components/QuickActionSection";
 import ReservationFilters from "./components/ReservationFilters";
 import ReservationStats from "./components/ReservationStats";
 import ReservationTable from "./components/ReservationTable";
@@ -17,9 +16,8 @@ export default function ReservationsPage() {
                 <div className="p-6">
                     <ReservationStats />
                     <ReservationFilters />
-                    <ReservationTable />
+                    <ReservationTable idRestaurant={idRestaurant} />
                     <UpcomingReservations idRestaurant={idRestaurant} />
-                    <QuickActionsSection />
                 </div>
             </div>
         </div>

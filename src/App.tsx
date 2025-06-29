@@ -1,16 +1,21 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./features/dashboard/pages/HomePage";
+import { ToastContainer } from 'react-toastify';
+
 import ReservationsPage from "./features/reservation/reservation";
 import OrdersPage from "./features/order/order";
 import CustomerOrderDetailsPage from "./features/order/customer_order";
 import CustomerDetailsPage from "./features/order/customer_details";
 import RestaurantProfilePage from "./features/restaurant/restaurant";
 import { AuthProvider, ProtectedRoute, SignInRoute } from "./app/context";
+import ReservationDetailsPage from "./features/reservation/reservation_details";
 
 
 const App: React.FC = () => (
     <AuthProvider>
         <BrowserRouter>
+            <ToastContainer />
+
             <Routes>
                 <Route
                     path="/"
@@ -29,6 +34,15 @@ const App: React.FC = () => (
                     }
                 />
                 <Route
+                    path="/reservation/details"
+                    element={
+                        <ProtectedRoute>
+                            <ReservationDetailsPage />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
                     path="/order"
                     element={
                         <ProtectedRoute>
@@ -45,7 +59,7 @@ const App: React.FC = () => (
                     }
                 />
                 <Route
-                    path="/order/customer"
+                    path="/order/customer/:idOrder"
                     element={
                         <ProtectedRoute>
                             <CustomerDetailsPage />

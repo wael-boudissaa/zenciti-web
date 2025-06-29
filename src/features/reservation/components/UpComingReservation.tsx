@@ -99,14 +99,6 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
                                         <span className="bg-light text-green-900 text-sm font-medium px-3 py-1 rounded-full">
                                             Table #{r.idTable.replace(/[^0-9]/g, "") || r.idTable}
                                         </span>
-                                        <div className="flex space-x-2">
-                                            <button className="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded transition">
-                                                Modify
-                                            </button>
-                                            <button className="text-sm bg-green-900 text-white hover:bg-green-900/90 px-3 py-1 rounded transition">
-                                                Confirm
-                                            </button>
-                                        </div>
                                     </div>
                                 </div>
                             );

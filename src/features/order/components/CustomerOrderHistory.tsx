@@ -61,7 +61,7 @@ const CustomerOrderHistory: React.FC<CustomerOrderHistoryProps> = ({ orders }) =
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                         {orders.map((o) => (
-                            <tr className="hover:bg-gray-50" key={o.idOrder} onClick={() => { navigate(`/order/customer`) }}>
+                            <tr className="hover:bg-gray-50" key={o.idOrder} onClick={() => { navigate(`/order/customer/${o.idOrder}`) }}>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <span className="font-medium">#{o.idOrder.slice(0, 8).toUpperCase()}</span>
                                 </td>
