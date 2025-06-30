@@ -8,7 +8,7 @@ import CustomerOrderDetailsPage from "./features/order/customer_order";
 import CustomerDetailsPage from "./features/order/customer_details";
 import RestaurantProfilePage from "./features/restaurant/restaurant";
 import { AuthProvider, ProtectedRoute, SignInRoute } from "./app/context";
-import ReservationDetailsPage from "./features/reservation/reservation_details";
+import TableDesignerPage from "./features/dashboard/pages/TableLayout";
 
 
 const App: React.FC = () => (
@@ -26,6 +26,15 @@ const App: React.FC = () => (
                     }
                 />
                 <Route
+                    path="/table"
+                    element={
+                        <ProtectedRoute>
+                            <TableDesignerPage />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
                     path="/reservation"
                     element={
                         <ProtectedRoute>
@@ -33,14 +42,14 @@ const App: React.FC = () => (
                         </ProtectedRoute>
                     }
                 />
-                <Route
-                    path="/reservation/details"
-                    element={
-                        <ProtectedRoute>
-                            <ReservationDetailsPage />
-                        </ProtectedRoute>
-                    }
-                />
+                {/* <Route */}
+                {/*     path="/reservation/details" */}
+                {/*     element={ */}
+                {/*         <ProtectedRoute> */}
+                {/*             <ReservationDetailsPage /> */}
+                {/*         </ProtectedRoute> */}
+                {/*     } */}
+                {/* /> */}
 
                 <Route
                     path="/order"

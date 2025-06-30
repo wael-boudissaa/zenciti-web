@@ -19,4 +19,27 @@ export function updateUser(id: string, data: Partial<UserCreate>) {
 
 export function deleteUser(id: string) {
     return apiDelete<void>(`/api/users/${id}`);
+
 }
+
+type TableShape = "square" | "circle"
+
+export type BackendTable = {
+    shape: TableShape;
+    posX: number;
+    posY: number;
+};
+
+export type DataTableBackend = {
+    idTable: string;
+    idRestaurant: string;
+    shape: TableShape;
+    posX: number;
+    posY: number;
+    is_available: boolean;
+};
+
+export function updateTableLayout(idRestaurant: string, data: BackendTable[]) {
+    return apiPut<DataTableBackend>(`/restaurant/${idRestaurant}/tables/bulk`, { data });
+}
+
