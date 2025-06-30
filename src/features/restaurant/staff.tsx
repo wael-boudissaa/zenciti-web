@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StaffGrid from "./components/StaffGrid";
 import AddStaffModal from "./components/AddStaffModel";
-import StaffReviewModal from "./components/StaffReviewModel";
+import StaffReviewModal, { WorkerProfileCard } from "./components/StaffReviewModel";
 import { createRestaurantWorker, getRestaurantStaff } from "./hooks/hooks";
 
 const StaffPage = ({ idRestaurant }) => {
@@ -71,8 +71,12 @@ const StaffPage = ({ idRestaurant }) => {
             <StaffGrid staffList={staffRows} onViewReview={handleViewReview} />
 
             <AddStaffModal open={addModalOpen} onClose={() => setAddModalOpen(false)} onSubmit={handleAddStaff} />
-            <StaffReviewModal open={reviewModalOpen} onClose={() => setReviewModalOpen(false)} staff={selectedStaff} />
-        </div>
+<WorkerProfileCard
+  open={reviewModalOpen}
+  onClose={() => setReviewModalOpen(false)}
+  idRestaurantWorker={selectedStaff?.idRestaurantWorker || null}
+/>
+</div>
     );
 };
 

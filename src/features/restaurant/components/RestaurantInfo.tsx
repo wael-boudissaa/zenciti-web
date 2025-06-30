@@ -51,9 +51,6 @@ export const RestaurantInfoCard: React.FC<RestaurantInfoCardProps> = ({ idRestau
                     <h3 className="font-bold text-lg">Restaurant Information</h3>
                     <p className="text-gray-500 text-sm">Basic details displayed to customers</p>
                 </div>
-                <button className="px-4 py-2 bg-primary text-white rounded-lg text-sm">
-                    <i className="fa-solid fa-pen-to-square mr-1" /> Edit
-                </button>
             </div>
             <div className="p-6">
                 <div className="flex flex-col md:flex-row">
@@ -64,14 +61,6 @@ export const RestaurantInfoCard: React.FC<RestaurantInfoCardProps> = ({ idRestau
                                 alt="Restaurant Image"
                                 className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                                <button className="bg-white text-gray-800 px-3 py-2 rounded-lg text-sm font-medium">
-                                    <i className="fa-solid fa-camera mr-1" /> Change Photo
-                                </button>
-                            </div>
-                        </div>
-                        <div className="mt-4 text-center bg-green-900 cursor-pointer px-8 py-2 rounded-lg text-white font-medium">
-                            Edit Restaurant Information
                         </div>
                     </div>
                     <div className="md:w-2/3">
@@ -112,31 +101,31 @@ export const RestaurantInfoCard: React.FC<RestaurantInfoCardProps> = ({ idRestau
                                     {user.phone || "Not specified"}
                                 </p>
                             </div>
-                            <div className="md:col-span-2">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Operating Hours
-                                </label>
-                                <div className="grid grid-cols-2 gap-2 text-sm">
-                                    <div className="flex justify-between">
-                                        <span className="text-gray-600">Monday-Thursday:</span>
-                                        <span className="text-gray-800">
-                                            {info.operatingHours?.mondayThursday || "Not specified"}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-gray-600">Friday-Saturday:</span>
-                                        <span className="text-gray-800">
-                                            {info.operatingHours?.fridaySaturday || "Not specified"}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-gray-600">Sunday:</span>
-                                        <span className="text-gray-800">
-                                            {info.operatingHours?.sunday || "Not specified"}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                            {/* <div className="md:col-span-2"> */}
+                            {/*     <label className="block text-sm font-medium text-gray-700 mb-1"> */}
+                            {/*         Operating Hours */}
+                            {/*     </label> */}
+                            {/*     <div className="grid grid-cols-2 gap-2 text-sm"> */}
+                            {/*         <div className="flex justify-between"> */}
+                            {/*             <span className="text-gray-600">Monday-Thursday:</span> */}
+                            {/*             <span className="text-gray-800"> */}
+                            {/*                 {info.operatingHours?.mondayThursday || "Not specified"} */}
+                            {/*             </span> */}
+                            {/*         </div> */}
+                            {/*         <div className="flex justify-between"> */}
+                            {/*             <span className="text-gray-600">Friday-Saturday:</span> */}
+                            {/*             <span className="text-gray-800"> */}
+                            {/*                 {info.operatingHours?.fridaySaturday || "Not specified"} */}
+                            {/*             </span> */}
+                            {/*         </div> */}
+                            {/*         <div className="flex justify-between"> */}
+                            {/*             <span className="text-gray-600">Sunday:</span> */}
+                            {/*             <span className="text-gray-800"> */}
+                            {/*                 {info.operatingHours?.sunday || "Not specified"} */}
+                            {/*             </span> */}
+                            {/*         </div> */}
+                            {/*     </div> */}
+                            {/* </div> */}
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Description

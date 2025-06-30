@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { MenuList } from "./components/MenuList";
 import { ActiveMenuContent } from "./components/ActiveMenu";
 import { MenuStatsSidebar } from "./components/MenuStats";
@@ -27,7 +27,7 @@ const RestaurantMenuPage = ({ idRestaurant }) => {
     const [viewedMenuFoods, setViewedMenuFoods] = useState<FoodByMenu[] | null>([]);
     const [foodLoading, setFoodLoading] = useState(false);
 
-    useEffect(() => {
+    const refreshMenus = useCallback(() => {
         setLoading(true);
         Promise.all([
             getMenuRestaurant(idRestaurant),
@@ -47,7 +47,11 @@ const RestaurantMenuPage = ({ idRestaurant }) => {
             .catch(() => setLoading(false));
     }, [idRestaurant]);
 
-    const refreshViewedMenuFoods = () => {
+    useEffect(() => {
+        refreshMenus();
+    }, [refreshMenus]);
+
+    const refreshViewedMenuFoods = useCallback(() => {
         if (!viewedMenu) {
             setViewedMenuFoods([]);
             return;
@@ -62,11 +66,11 @@ const RestaurantMenuPage = ({ idRestaurant }) => {
                 setFoodLoading(false);
             })
             .catch(() => setFoodLoading(false));
-    };
+    }, [idRestaurant, viewedMenu]);
 
     useEffect(() => {
         refreshViewedMenuFoods();
-    }, [idRestaurant, viewedMenu]);
+    }, [idRestaurant, viewedMenu, refreshViewedMenuFoods]);
 
     const inactiveMenusData = inactiveMenus.map((menu) => ({
         name: menu.name,
@@ -123,6 +127,7 @@ const RestaurantMenuPage = ({ idRestaurant }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 flex flex-col gap-6">
                 <MenuList
+                    idRestaurant={idRestaurant}
                     activeMenu={
                         activeMenu
                             ? {
@@ -139,6 +144,7 @@ const RestaurantMenuPage = ({ idRestaurant }) => {
                     onCreateMenu={() => setShowCreateMenuModal(true)}
                     onViewMenu={(menuObj) => setViewedMenu(menuObj)}
                     viewedMenuId={viewedMenu?.idMenu}
+                    onMenuActivated={refreshMenus}
                 />
                 {viewedMenuData &&
                     (foodLoading ? (

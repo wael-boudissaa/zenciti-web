@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getMenuStats, type MenuStats } from "../hooks/hooks";
-
+import CreateFoodModal from "./CreateFoodModel";
 export const MenuStatsSidebar = ({ idRestaurant }) => {
-    const [stats, setStats] = useState<MenuStats>(null);
+    const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showCreateFoodModal, setShowCreateFoodModal] = useState(false);
 
     useEffect(() => {
-        console.log("MenuStatsSidebar: idRestaurant =", idRestaurant);
-
         setLoading(true);
         getMenuStats(idRestaurant)
             .then((res) => {
@@ -69,17 +68,23 @@ export const MenuStatsSidebar = ({ idRestaurant }) => {
                     <button className="w-full px-4 py-2 bg-green-900 text-white rounded-lg text-sm flex items-center justify-center">
                         <i className="fa-solid fa-print mr-2"></i> Print Current Menu
                     </button>
-                    <button className="w-full px-4 py-2 bg-accent text-white rounded-lg text-sm flex items-center justify-center">
-                        <i className="fa-solid fa-download mr-2"></i> Export as PDF
-                    </button>
-                    <button className="w-full px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm flex items-center justify-center hover:bg-gray-50">
-                        <i className="fa-solid fa-copy mr-2"></i> Duplicate Menu
-                    </button>
-                    <button className="w-full px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm flex items-center justify-center hover:bg-gray-50">
-                        <i className="fa-solid fa-share-alt mr-2"></i> Share Menu Link
+                    <button
+                        className="w-full px-4 py-2 bg-green-900 text-white rounded-lg text-sm flex items-center justify-center"
+                        onClick={() => setShowCreateFoodModal(true)}
+                    >
+                        <i className="fa-solid fa-plus mr-2"></i> Create Food
                     </button>
                 </div>
             </div>
+            <CreateFoodModal
+                open={showCreateFoodModal}
+                onClose={() => setShowCreateFoodModal(false)}
+                idRestaurant={idRestaurant}
+                onFoodCreated={() => {
+                    // Optionally: refresh stats or trigger parent reload
+                    setShowCreateFoodModal(false);
+                }}
+            />
         </div>
     );
 };

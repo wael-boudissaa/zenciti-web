@@ -90,6 +90,39 @@ export type PopularFood = {
     orderCount: number;
 
 }
+export type RestaurantWorker = {
+    idRestaurantWorker: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    quote: string;
+    startWorking: string; // ISO date string
+    nationnallity: string;
+    nativeLanguage: string;
+    rating: number;
+    image: string | null;
+    address: string;
+    status: "active" | "inactive" | string; // adjust status enum as needed
+    idRestaurant: string;
+    recentRatings: {
+        ratingValue: number;
+        comment: string;
+        createdAt: string; // ISO date string
+        clientFirstName: string;
+        clientLastName: string;
+    }[];
+    ratingStats: {
+        totalRatings: number;
+        averageRating: number;
+        percentage5Stars: number;
+        percentage4Stars: number;
+        percentage3Stars: number;
+        percentage2Stars: number;
+        percentage1Star: number;
+    };
+};
+
 
 
 export function getRestaurantInformation(idRestaurant: string) {
@@ -150,4 +183,17 @@ export async function createRestaurantWorker(idRestaurant: string, formData: For
     return apiPost(`/restaurant/worker/${idRestaurant}`, formData, {
         // do not set headers here
     });
+}
+export async function createFood(formData: FormData) {
+    return apiPost(`/food`, formData, {
+        // do not set headers here
+    });
+}
+
+export async function ActivateMenu(idMenu: string, idRestaurant: string) {
+    return apiPut<string>(`/menu/${idMenu}/activate/${idRestaurant}`);
+}
+
+export async function getRestaurantWorkerDetails(idRestaurantWorker: string) {
+    return apiGet<RestaurantWorker>(`/worker/${idRestaurantWorker}/details`);
 }
