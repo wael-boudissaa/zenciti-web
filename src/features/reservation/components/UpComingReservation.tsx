@@ -13,7 +13,7 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
                 setReservations(data || []);
                 setLoading(false);
             })
-            .catch(() => setLoading(false));
+            .catch(() => setLoading(false))
     }, [idRestaurant]);
 
     // Helper: format date to readable string (e.g. Jun 8, 2023)
@@ -97,7 +97,7 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="bg-light text-green-900 text-sm font-medium px-3 py-1 rounded-full">
-                                            Table #{r.idTable.replace(/[^0-9]/g, "") || r.idTable}
+                                            Table #{r.idTable?.replace(/[^0-9]/g, "") || "there is no table assigned"}
                                         </span>
                                     </div>
                                 </div>
