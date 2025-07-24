@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { updateTableLayout } from "../hooks/hooks";
+import { useAuth } from "../../../app/context";
 
 // Types from your backend API
 type TableShape = "square" | "circle";
@@ -20,7 +21,6 @@ export type BackendTable = {
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
 const GRID_SIZE = 20;
-const RESTAURANT_ID = "c3b2a1d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d";
 
 type TableObj = {
     id: string;
@@ -33,6 +33,9 @@ type TableObj = {
 };
 
 export default function TableFloorPlanEditor() {
+    const auth = useAuth();
+    const RESTAURANT_ID = auth?.idRestaurant ?? "";
+
     const canvasRef = useRef<HTMLDivElement>(null);
     const [tables, setTables] = useState<TableObj[]>([]);
     const [draggedId, setDraggedId] = useState<string | null>(null);
@@ -99,7 +102,6 @@ export default function TableFloorPlanEditor() {
         };
     }, [draggedId, dragOffset]);
 
-    // Save to backend using updateTableLayout
     const handleSave = async () => {
         setSaving(true);
         try {
@@ -205,7 +207,6 @@ export default function TableFloorPlanEditor() {
                                             touchAction: "none",
                                         }}
                                     >
-                                        {/* Grid */}
                                         <svg
                                             width={CANVAS_WIDTH}
                                             height={CANVAS_HEIGHT}
@@ -244,7 +245,6 @@ export default function TableFloorPlanEditor() {
                                                 )
                                             )}
                                         </svg>
-                                        {/* Render tables */}
                                         {tables.map(t => (
                                             <div
                                                 key={t.id}

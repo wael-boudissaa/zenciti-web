@@ -28,5 +28,5 @@ export function getUser(id: string) {
 }
 
 export function signInAdmin(data: UserSignIn) {
-    return apiPost<Data, UserSignIn>("/admin/login", data);
+    return apiPost<Data, UserSignIn>("/admin/restaurant/login", data);
 }
