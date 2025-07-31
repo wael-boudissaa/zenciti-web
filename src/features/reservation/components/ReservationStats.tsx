@@ -35,7 +35,7 @@ export default function ReservationStats() {
       {stats.map((stat, i) => (
         <div key={i} className="bg-white rounded-xl shadow-sm p-5 flex items-center">
           <div className="bg-light rounded-lg p-3 mr-4">
-            <FontAwesomeIcon icon={stat.icon} className="text-green-900 text-xl" />
+            <FontAwesomeIcon icon={stat.icon} className="text-primary text-xl" />
           </div>
           <div>
             <p className="text-gray-500 text-sm">{stat.label}</p>

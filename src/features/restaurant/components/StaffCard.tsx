@@ -1,7 +1,7 @@
 import React from "react";
 
 const statusColors = {
-    active: "bg-green-100 text-green-700 border-green-500",
+    active: "bg-primary text-green-700 border-green-500",
     inactive: "bg-gray-100 text-gray-500 border-gray-400",
     "on leave": "bg-yellow-100 text-yellow-700 border-yellow-400"
 };
@@ -84,7 +84,7 @@ const StaffCard = ({ staff, onViewReview }) => (
         <div className="px-6 pb-5 pt-2 mt-auto">
             <button
                 onClick={onViewReview}
-                className="w-full py-2 bg-green-900 text-white rounded-lg font-semibold shadow hover:from-green-800 hover:to-accent transition"
+                className="w-full py-2 bg-primary text-white rounded-lg font-semibold shadow hover:from-green-800 hover:to-accent transition"
             >
                 View Profile
             </button>

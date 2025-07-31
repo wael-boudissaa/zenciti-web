@@ -105,7 +105,7 @@ export const EditMenuModal = ({
                                         </div>
                                         <button
                                             onClick={() => handleAddFood(food.idFood)}
-                                            className="px-4 py-2 bg-green-900 text-white rounded-md hover:bg-green-900/90 text-sm"
+                                            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 text-sm"
                                             disabled={adding[food.idFood]}
                                         >
                                             {adding[food.idFood] ? "Adding..." : "Add"}

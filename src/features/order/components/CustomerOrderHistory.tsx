@@ -21,7 +21,7 @@ interface CustomerOrderHistoryProps {
 
 const statusMap: Record<string, { text: string; statusClass: string }> = {
     pending: { text: "Pending", statusClass: "bg-yellow-100 text-yellow-800" },
-    completed: { text: "Completed", statusClass: "bg-green-100 text-green-800" },
+    completed: { text: "Completed", statusClass: "bg-primary-light text-primary/80" },
     cancelled: { text: "Cancelled", statusClass: "bg-red-100 text-red-800" },
     processing: { text: "Processing", statusClass: "bg-yellow-100 text-yellow-800" },
 };

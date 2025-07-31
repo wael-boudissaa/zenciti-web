@@ -36,7 +36,7 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
         const today = new Date();
         const target = new Date(dateStr);
         const diff = Math.ceil((target.getTime() - today.setHours(0, 0, 0, 0)) / (1000 * 60 * 60 * 24));
-        if (diff === 0) return { badge: "Today", badgeColor: "bg-green-100 text-green-800" };
+        if (diff === 0) return { badge: "Today", badgeColor: "bg-primary-light text-primary/80" };
         if (diff === 1) return { badge: "Tomorrow", badgeColor: "bg-blue-100 text-blue-800" };
         if (diff > 1 && diff < 7) return { badge: formatDate(dateStr), badgeColor: "bg-purple-100 text-purple-800" };
         return { badge: formatDate(dateStr), badgeColor: "bg-gray-100 text-gray-800" };
@@ -55,7 +55,7 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
                     <p className="text-sm text-gray-500">Next 7 days</p>
                 </div>
                 <div>
-                    <button className="text-sm text-green-900 font-medium hover:underline">View All</button>
+                    <button className="text-sm text-primary font-medium hover:underline">View All</button>
                 </div>
             </div>
             <div className="p-5">
@@ -96,7 +96,7 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
                                         </div>
                                     </div>
                                     <div className="flex justify-between items-center">
-                                        <span className="bg-light text-green-900 text-sm font-medium px-3 py-1 rounded-full">
+                                        <span className="bg-light text-primary text-sm font-medium px-3 py-1 rounded-full">
                                             Table #{r.idTable?.replace(/[^0-9]/g, "") || "there is no table assigned"}
                                         </span>
                                     </div>

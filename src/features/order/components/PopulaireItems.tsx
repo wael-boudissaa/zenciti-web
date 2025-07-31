@@ -48,12 +48,12 @@ const PopularItems = ({ idRestaurant }) => {
                     items.map((item) => (
                         <div className="border rounded-xl p-4 relative group hover:shadow" key={item.idFood || item.rank}>
                             <div className="absolute top-3 right-3">
-                                <span className="text-xs bg-green-900 text-white px-2 py-1 rounded-full">
+                                <span className="text-xs bg-primary text-white px-2 py-1 rounded-full">
                                     #{item.rank}
                                 </span>
                             </div>
                             <div className="flex items-center mb-3">
-                                <div className="bg-green-900/10 rounded-lg p-3 mr-3 w-16 h-16 flex items-center justify-center overflow-hidden">
+                                <div className="bg-primary/10 rounded-lg p-3 mr-3 w-16 h-16 flex items-center justify-center overflow-hidden">
                                     <img
                                         src={item.image}
                                         alt={item.name}

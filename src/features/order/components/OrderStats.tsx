@@ -27,7 +27,7 @@ const OrderStats: React.FC<Props> = ({ loading, statusStats }) => {
         <div key={i} className="bg-white rounded-xl shadow-sm p-6 flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <div className="bg-light rounded-lg p-3">
-              <i className={`fa-solid ${c.icon} text-green-900 text-xl`}></i>
+              <i className={`fa-solid ${c.icon} text-primary text-xl`}></i>
             </div>
             <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">Today</span>
           </div>

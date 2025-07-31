@@ -37,7 +37,7 @@ const OrderItems: React.FC<Props> = ({ items }) => (
                                 {item.image ? (
                                     <img src={item.image} alt={item.name} className="h-20 w-20 object-cover rounded" />
                                 ) : (
-                                    <i className={`fa-solid ${iconForItem(item.name)} text-2xl text-green-900`}></i>
+                                    <i className={`fa-solid ${iconForItem(item.name)} text-2xl text-primary`}></i>
                                 )}
                             </div>
                         </div>

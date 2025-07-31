@@ -17,9 +17,9 @@ const StatsCards: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) => {
         const fetchData = async () => {
             const result = await getDashboardCount(idRestaurant)
             if (result) {
-                setOrderCount(result.numberOrders);
-                setReservationCount(result.numberReservation);
-                setFirstTimeUsers(result.firstTimeUsers);
+                setOrderCount(Math.floor(result.numberOrders || 0));
+                setReservationCount(Math.floor(result.numberReservation || 0));
+                setFirstTimeUsers(Math.floor(result.firstTimeUsers || 0));
             } else {
                 console.error("Failed to fetch dashboard count");
             }
@@ -63,7 +63,7 @@ const StatsCards: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) => {
                 <div key={stat.label} className="bg-white rounded-xl shadow-sm p-6 flex flex-col">
                     <div className="flex items-center justify-between mb-4">
                         <div className="bg-light rounded-lg p-3">
-                            <FontAwesomeIcon icon={stat.icon} className="text-green-900 text-xl" />
+                            <FontAwesomeIcon icon={stat.icon} className="text-primary text-xl" />
                         </div>
                         <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">{stat.time}</span>
                     </div>
@@ -72,7 +72,7 @@ const StatsCards: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) => {
                     <div className="mt-auto">
                         <p className="text-sm font-medium mb-2">Goal: {stat.goal} {stat.goalLabel}</p>
                         <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-                            <div className="bg-green-900 h-full rounded-full" style={{ width: `${(stat.value * 100) / stat.goal}%` }}></div>
+                            <div className="bg-primary h-full rounded-full" style={{ width: `${Math.min(100, Math.floor((stat.value * 100) / stat.goal))}%` }}></div>
                         </div>
                     </div>
                 </div>

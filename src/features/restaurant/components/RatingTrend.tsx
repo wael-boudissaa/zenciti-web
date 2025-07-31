@@ -42,7 +42,7 @@ export const RatingTrendsChart: React.FC<RatingTrendsChartProps> = ({ stats }) =
     const data = months.map(({ year, month }) => {
       const stat = statMap.get(`${year}-${month}`);
       if (stat && stat.totalRatings > 0) return stat.averageRating;
-      return 2.5; // Default for missing months
+      return 0; // Default for missing months
     });
 
     // If chart already exists, destroy before creating a new one

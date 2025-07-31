@@ -118,11 +118,11 @@ const OrderSummary: React.FC<Props> = ({ order, loading }) => {
                         </div>
                     </div>
                     <div className="space-y-3">
-                        <button className="w-full bg-green-900 text-white py-2 rounded-lg flex items-center justify-center">
+                        <button className="w-full bg-primary text-white py-2 rounded-lg flex items-center justify-center">
                             <i className="fa-solid fa-print mr-2"></i>
                             Print Receipt
                         </button>
-                        <button className="w-full border border-green-900 text-green-900 py-2 rounded-lg flex items-center justify-center">
+                        <button className="w-full border border-primary text-primary py-2 rounded-lg flex items-center justify-center">
                             <i className="fa-solid fa-envelope mr-2"></i>
                             Email Receipt
                         </button>

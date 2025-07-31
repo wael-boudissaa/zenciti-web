@@ -7,11 +7,11 @@ import ReservationDetailsPage from "../../features/reservation/reservation_detai
 
 type DashboardReservation = ReservationListInformation & {
     idReservation?: string;
-    tableId?: string;
+    tableId?: string | null;
 };
 
-function formatTableNumber(tableId: string) {
-    if (!tableId) return "N/A";
+function formatTableNumber(tableId: string | null | undefined) {
+    if (!tableId) return null;
     
     // If the tableId is in format like "table-1" or "T1", extract the number
     const match = tableId.match(/(\d+)/);
@@ -35,7 +35,7 @@ function formatTableNumber(tableId: string) {
 //         email: "lindsey.stroud@gmail.com",
 //         from: "OHIO",
 //         order: "Check Order",
-//         orderClass: "bg-green-100 text-green-800",
+//         orderClass: "bg-primary100 text-green-800",
 //         members: 2,
 //     },
 //     {
@@ -44,7 +44,7 @@ function formatTableNumber(tableId: string) {
 //         email: "sarah.brown@gmail.com",
 //         from: "Zenciti",
 //         order: "Check Order",
-//         orderClass: "bg-green-100 text-green-800",
+//         orderClass: "bg-primary100 text-green-800",
 //         members: 4,
 //     },
 //     {
@@ -62,7 +62,7 @@ function formatTableNumber(tableId: string) {
 //         email: "mary.jane@gmail.com",
 //         from: "Chicago",
 //         order: "Check Order",
-//         orderClass: "bg-green-100 text-green-800",
+//         orderClass: "bg-primary100 text-green-800",
 //         members: 2,
 //     },
 //     {
@@ -71,7 +71,7 @@ function formatTableNumber(tableId: string) {
 //         email: "peter.dodle@gmail.com",
 //         from: "Zenciti",
 //         order: "Check Order",
-//         orderClass: "bg-green-100 text-green-800",
+//         orderClass: "bg-primary100 text-green-800",
 //         members: 2,
 //     },
 // ];
@@ -82,44 +82,68 @@ const ReservationList: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) =
     const [error, setError] = useState<string | null>(null);
     const [selectedReservationId, setSelectedReservationId] = useState<string | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(1);
+    const [totalCount, setTotalCount] = useState<number>(0);
 
     useEffect(() => {
         setLoading(true);
         setError(null);
         
-        // Use the reservations API to get today's reservations with IDs
-        getRestaurantReservations(idRestaurant, 1)
+        // Use the reservations API to get today's reservations with pagination
+        // SQL idTable errors are now handled at API layer and converted to successful responses
+        getRestaurantReservations(idRestaurant, currentPage)
             .then(response => {
+                // Update pagination info
+                setTotalPages(response.totalPages ?? 1);
+                setTotalCount(response.totalCount ?? 0);
+                
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                const tomorrow = new Date(today);
-                tomorrow.setDate(tomorrow.getDate() + 1);
                 
-                // Filter for today's reservations
+                // Filter for today's reservations and handle null table IDs safely
                 const todaysReservations = (response.reservations || [])
                     .filter(r => {
-                        const reservationDate = new Date(r.timeFrom);
-                        reservationDate.setHours(0, 0, 0, 0);
-                        return reservationDate.getTime() === today.getTime();
+                        try {
+                            const reservationDate = new Date(r.timeFrom);
+                            reservationDate.setHours(0, 0, 0, 0);
+                            return reservationDate.getTime() === today.getTime();
+                        } catch (e) {
+                            console.warn('Invalid date format for reservation:', r);
+                            return false;
+                        }
                     })
-                    .map(r => ({
-                        idReservation: r.idReservation,
-                        firstName: r.fullName?.split(' ')[0] || '',
-                        lastName: r.fullName?.split(' ').slice(1).join(' ') || '',
-                        email: '', // Email not available in this API
-                        address: '', // Not available in this API
-                        numberOfPeople: r.numberOfPeople,
-                        status: r.status,
-                        tableId: r.tableId
-                    }));
+                    .map(r => {
+                        try {
+                            return {
+                                idReservation: r.idReservation || '',
+                                firstName: r.fullName?.split(' ')[0] || 'Unknown',
+                                lastName: r.fullName?.split(' ').slice(1).join(' ') || '',
+                                email: '', // Email not available in this API
+                                address: '', // Not available in this API
+                                numberOfPeople: r.numberOfPeople || 0,
+                                status: r.status || 'Pending',
+                                tableId: (r.tableId && r.tableId !== "null" && r.tableId !== "") ? r.tableId : null // Robust null handling
+                            };
+                        } catch (e) {
+                            console.warn('Error processing reservation:', r, e);
+                            return null;
+                        }
+                    })
+                    .filter(r => r !== null) as DashboardReservation[]; // Remove null entries
                 
                 setReservation(todaysReservations);
             })
             .catch(err => {
+                console.error('Error fetching reservations:', err);
                 setError(err.message || "Failed to fetch reservations");
+                // Set empty data on error to prevent UI crashes
+                setReservation([]);
+                setTotalPages(1);
+                setTotalCount(0);
             })
             .finally(() => setLoading(false));
-    }, [idRestaurant]);
+    }, [idRestaurant, currentPage]);
 
     const handleReservationClick = (idReservation: string) => {
         setSelectedReservationId(idReservation);
@@ -134,37 +158,64 @@ const ReservationList: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) =
     const handleStatusChange = () => {
         // Refresh the reservations list after status change
         setLoading(true);
-        getRestaurantReservations(idRestaurant, 1)
+        getRestaurantReservations(idRestaurant, currentPage)
             .then(response => {
+                setTotalPages(response.totalPages ?? 1);
+                setTotalCount(response.totalCount ?? 0);
+                
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
                 
                 const todaysReservations = (response.reservations || [])
                     .filter(r => {
-                        const reservationDate = new Date(r.timeFrom);
-                        reservationDate.setHours(0, 0, 0, 0);
-                        return reservationDate.getTime() === today.getTime();
+                        try {
+                            const reservationDate = new Date(r.timeFrom);
+                            reservationDate.setHours(0, 0, 0, 0);
+                            return reservationDate.getTime() === today.getTime();
+                        } catch (e) {
+                            console.warn('Invalid date format for reservation:', r);
+                            return false;
+                        }
                     })
-                    .map(r => ({
-                        idReservation: r.idReservation,
-                        firstName: r.fullName?.split(' ')[0] || '',
-                        lastName: r.fullName?.split(' ').slice(1).join(' ') || '',
-                        email: '', // Email not available in this API
-                        address: '', 
-                        numberOfPeople: r.numberOfPeople,
-                        status: r.status,
-                        tableId: r.tableId
-                    }));
+                    .map(r => {
+                        try {
+                            return {
+                                idReservation: r.idReservation || '',
+                                firstName: r.fullName?.split(' ')[0] || 'Unknown',
+                                lastName: r.fullName?.split(' ').slice(1).join(' ') || '',
+                                email: '', // Email not available in this API
+                                address: '', 
+                                numberOfPeople: r.numberOfPeople || 0,
+                                status: r.status || 'Pending',
+                                tableId: (r.tableId && r.tableId !== "null" && r.tableId !== "") ? r.tableId : null // Robust null handling
+                            };
+                        } catch (e) {
+                            console.warn('Error processing reservation:', r, e);
+                            return null;
+                        }
+                    })
+                    .filter(r => r !== null) as DashboardReservation[];
                 
                 setReservation(todaysReservations);
             })
             .catch(err => {
+                console.error('Error fetching reservations:', err);
                 setError(err.message || "Failed to fetch reservations");
+                setReservation([]);
+                setTotalPages(1);
+                setTotalCount(0);
             })
             .finally(() => setLoading(false));
         
         handleCloseModal();
     };
+
+    const handlePageChange = (page: number) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+        }
+    };
+
 
     return (
         <>
@@ -177,7 +228,7 @@ const ReservationList: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) =
                             <FontAwesomeIcon icon={faFilter} className="mr-2" />
                             Filter
                         </button>
-                        <button className="text-sm bg-green-900 text-white hover:bg-green-900/90 px-4 py-2 rounded-lg flex items-center">
+                        <button className="text-sm bg-primary text-white hover:bg-primary/90 px-4 py-2 rounded-lg flex items-center">
                             <FontAwesomeIcon icon={faPlus} className="mr-2" />
                             Add New
                         </button>
@@ -217,13 +268,17 @@ const ReservationList: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) =
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">{r.email}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                                            {formatTableNumber(r.tableId || '')}
+                                        <span className={`text-sm font-medium px-3 py-1 rounded-full ${
+                                            r.tableId 
+                                                ? 'bg-primary-light text-primary' 
+                                                : 'bg-gray-100 text-gray-600'
+                                        }`}>
+                                            {r.tableId ? formatTableNumber(r.tableId) : 'Unassigned'}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-2 py-1 text-xs rounded-full ${
-                                            r.status === 'Confirmed' ? 'bg-green-100 text-green-800' :
+                                            r.status === 'Confirmed' ? 'bg-primary-light text-primary' :
                                             r.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
                                             r.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
                                             'bg-gray-100 text-gray-800'
@@ -247,15 +302,41 @@ const ReservationList: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) =
                 )}
             </div>
             <div className="px-6 py-4 border-t flex items-center justify-between">
-                <p className="text-sm text-gray-600">Showing 5 of 25 entries</p>
+                <p className="text-sm text-gray-600">
+                    Showing {reservation.length} of {totalCount} today's reservations
+                </p>
                 <div className="flex space-x-1">
-                    <button className="px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200">
+                    <button 
+                        className="px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200 transition disabled:opacity-50"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage <= 1}
+                    >
                         <i className="fa-solid fa-chevron-left text-xs"></i>
                     </button>
-                    <button className="px-3 py-1 rounded bg-green-900 text-white">1</button>
-                    <button className="px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200">2</button>
-                    <button className="px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200">3</button>
-                    <button className="px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200">
+                    
+                    {/* Show page numbers */}
+                    {[...Array(Math.min(totalPages, 5))].map((_, index) => {
+                        const pageNum = index + 1;
+                        return (
+                            <button
+                                key={pageNum}
+                                className={`px-3 py-1 rounded transition ${
+                                    currentPage === pageNum 
+                                        ? 'bg-primary text-white' 
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                }`}
+                                onClick={() => handlePageChange(pageNum)}
+                            >
+                                {pageNum}
+                            </button>
+                        );
+                    })}
+                    
+                    <button 
+                        className="px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200 transition disabled:opacity-50"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage >= totalPages}
+                    >
                         <i className="fa-solid fa-chevron-right text-xs"></i>
                     </button>
                 </div>

@@ -32,7 +32,7 @@ const CustomerProfile: React.FC<ProfileProps> = ({ profile, totalOrders, totalSp
                     </div>
                 </div>
                 <div className="ml-auto">
-                    <button className="bg-green-900 text-white px-4 py-2 rounded-lg flex items-center">
+                    <button className="bg-primary text-white px-4 py-2 rounded-lg flex items-center">
                         <i className="fa-solid fa-envelope mr-2"></i>
                         Contact
                     </button>
@@ -41,8 +41,8 @@ const CustomerProfile: React.FC<ProfileProps> = ({ profile, totalOrders, totalSp
             <div className="grid grid-cols-4 gap-6 mt-8">
                 <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">
-                        <div className="w-8 h-8 bg-green-900/10 rounded-full flex items-center justify-center mr-2">
-                            <i className="fa-solid fa-shopping-bag text-green-900"></i>
+                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-2">
+                            <i className="fa-solid fa-shopping-bag text-primary"></i>
                         </div>
                         <h3 className="font-medium">Total Orders</h3>
                     </div>
@@ -50,8 +50,8 @@ const CustomerProfile: React.FC<ProfileProps> = ({ profile, totalOrders, totalSp
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">
-                        <div className="w-8 h-8 bg-green-900/10 rounded-full flex items-center justify-center mr-2">
-                            <i className="fa-solid fa-money-bill-wave text-green-900"></i>
+                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-2">
+                            <i className="fa-solid fa-money-bill-wave text-primary"></i>
                         </div>
                         <h3 className="font-medium">Total Spent</h3>
                     </div>
@@ -59,8 +59,8 @@ const CustomerProfile: React.FC<ProfileProps> = ({ profile, totalOrders, totalSp
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">
-                        <div className="w-8 h-8 bg-green-900/10 rounded-full flex items-center justify-center mr-2">
-                            <i className="fa-solid fa-calendar-alt text-green-900"></i>
+                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-2">
+                            <i className="fa-solid fa-calendar-alt text-primary"></i>
                         </div>
                         <h3 className="font-medium">First Order</h3>
                     </div>
@@ -68,8 +68,8 @@ const CustomerProfile: React.FC<ProfileProps> = ({ profile, totalOrders, totalSp
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">
-                        <div className="w-8 h-8 bg-green-900/10 rounded-full flex items-center justify-center mr-2">
-                            <i className="fa-solid fa-star text-green-900"></i>
+                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-2">
+                            <i className="fa-solid fa-star text-primary"></i>
                         </div>
                         <h3 className="font-medium">Avg. Rating</h3>
                     </div>

@@ -25,7 +25,7 @@ export const MenuList = ({
                 </div>
                 <button
                     onClick={onCreateMenu}
-                    className="px-4 py-2 bg-green-900 text-white rounded-lg text-sm"
+                    className="px-4 py-2 bg-primary text-white rounded-lg text-sm"
                 >
                     <i className="fa-solid fa-plus mr-1"></i> Create New Menu
                 </button>
@@ -35,10 +35,10 @@ export const MenuList = ({
                 {activeMenu && (
                     <div id="active-menu" className="mb-8">
                         <h4 className="font-semibold text-md mb-4 flex items-center">
-                            <span className="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                            <span className="w-3 h-3 bg-primary500 rounded-full mr-2"></span>
                             Active Menu
                         </h4>
-                        <div className="border border-green-200 bg-green-50 rounded-lg p-4 mb-4">
+                        <div className="border border-green-200 bg-primary50 rounded-lg p-4 mb-4">
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
                                     <i className="fa-solid fa-utensils text-green-900 text-xl mr-3"></i>
@@ -97,7 +97,7 @@ export const MenuList = ({
                                             <i className="fa-solid fa-eye mr-1"></i> View
                                         </button>
                                         <button
-                                            className="px-3 py-1.5 bg-green-900 text-white rounded text-sm hover:bg-accent/90"
+                                            className="px-3 py-1.5 bg-primary text-white rounded text-sm hover:bg-accent/90"
                                             onClick={() => handleActivate(menu.idMenu)}
                                         >
                                             <i className="fa-solid fa-check mr-1"></i> Activate

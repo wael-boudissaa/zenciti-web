@@ -31,7 +31,7 @@ const FavoriteItems: React.FC = () => (
       {items.map((item, i) => (
         <div className="border rounded-xl p-4" key={i}>
           <div className="flex items-center mb-3">
-            <div className="bg-green-900/10 rounded-lg p-3 mr-3">
+            <div className="bg-primary/10 rounded-lg p-3 mr-3">
               <i className="fa-solid fa-utensils text-green-900"></i>
             </div>
             <div>

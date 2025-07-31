@@ -89,7 +89,7 @@ export const WorkerProfileCard = ({
                                     <h2 className="text-2xl font-bold text-gray-800">
                                         {worker.firstName} {worker.lastName}
                                     </h2>
-                                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${worker.status === "active" ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-500"}`}>
+                                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${worker.status === "active" ? "bg-primary100 text-green-700" : "bg-gray-200 text-gray-500"}`}>
                                         {worker.status === "active" ? "Active" : "Inactive"}
                                     </span>
                                 </div>
@@ -156,7 +156,7 @@ export const WorkerProfileCard = ({
                                                 </span>
                                                 <div className="w-full bg-gray-200 h-2 mx-2 rounded overflow-hidden">
                                                     <div
-                                                        className="bg-green-900 h-2 rounded"
+                                                        className="bg-primary h-2 rounded"
                                                         style={{ width: `${percent}%` }}
                                                     />
                                                 </div>

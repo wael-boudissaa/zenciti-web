@@ -22,7 +22,7 @@ const hours = [
 ];
 
 const COLORS: Record<string, string> = {
-  completed: "#00674B",
+  completed: "#022c22",
   pending: "#F59E0B",
   cancelled: "#EF4444",
   default: "#3B82F6",
@@ -72,7 +72,7 @@ const OrderAnalytics: React.FC<Props> = ({ loading, hourlyStats, statusStats }) 
               return (
                 <div
                   key={h}
-                  className="flex-1 mx-1 bg-green-900 rounded"
+                  className="flex-1 mx-1 bg-primary rounded"
                   style={{ height: `${(value / maxCount) * 100}%`, minHeight: 2 }}
                   title={`${h}:00 - ${value} orders`}
                 ></div>

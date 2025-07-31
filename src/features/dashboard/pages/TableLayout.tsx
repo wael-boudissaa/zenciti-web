@@ -22,6 +22,24 @@ const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
 const GRID_SIZE = 20;
 
+function formatTableNumber(tableId: string) {
+    if (!tableId) return "N/A";
+    
+    // If the tableId is in format like "table-1" or "T1", extract the number
+    const match = tableId.match(/(\d+)/);
+    if (match) {
+        return match[1];
+    }
+    
+    // If it's already in a good format or short, return as is
+    if (tableId.length <= 3) {
+        return tableId;
+    }
+    
+    // For long IDs, show first few characters
+    return tableId.substring(0, 3) + "...";
+}
+
 type TableObj = {
     id: string;
     shape: TableShape;
@@ -50,15 +68,17 @@ export default function TableFloorPlanEditor() {
         setLoading(true);
         getTablesByRestaurant(RESTAURANT_ID)
             .then(backendTables => {
-                const convertedTables: TableObj[] = backendTables.map((backendTable, index) => ({
-                    id: backendTable.idTable || `T${index + 1}`,
-                    shape: backendTable.shape as TableShape,
-                    x: backendTable.posX,
-                    y: backendTable.posY,
-                    size: 80, // Default size
-                    capacity: backendTable.shape === "square" ? 4 : 6,
-                    is_available: backendTable.is_available
-                }));
+                const convertedTables: TableObj[] = backendTables
+                    .filter(backendTable => backendTable.idTable) // Filter out tables with null IDs
+                    .map((backendTable, index) => ({
+                        id: backendTable.idTable,
+                        shape: backendTable.shape as TableShape,
+                        x: backendTable.posX,
+                        y: backendTable.posY,
+                        size: 80, // Default size
+                        capacity: backendTable.shape === "square" ? 4 : 6,
+                        is_available: backendTable.is_available
+                    }));
                 setTables(convertedTables);
             })
             .catch(err => {
@@ -181,7 +201,7 @@ export default function TableFloorPlanEditor() {
                             </div>
                             <div className="flex space-x-2">
                                 <button
-                                    className="text-sm bg-green-900 text-white hover:bg-green-900/90 px-4 py-2 rounded-lg flex items-center"
+                                    className="text-sm bg-primary text-white hover:bg-primary/90 px-4 py-2 rounded-lg flex items-center"
                                     onClick={handleSave}
                                     disabled={saving}
                                 >
@@ -310,7 +330,7 @@ export default function TableFloorPlanEditor() {
                                                 onMouseDown={e => handleMouseDown(e, t.id)}
                                                 title="Drag to move"
                                             >
-                                                <span className="text-base font-bold">{t.id}</span>
+                                                <span className="text-base font-bold">{formatTableNumber(t.id)}</span>
                                                 <span className="text-xs">
                                                     {t.shape === "circle" ? "Circle" : "Square"}
                                                 </span>
@@ -345,7 +365,7 @@ export default function TableFloorPlanEditor() {
                                     ) : (
                                         tables.map(table => (
                                             <tr className="hover:bg-gray-50" key={table.id}>
-                                                <td className="px-6 py-4 whitespace-nowrap font-medium">{table.id}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap font-medium">{formatTableNumber(table.id)}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{table.shape.charAt(0).toUpperCase() + table.shape.slice(1)}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{table.capacity}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">

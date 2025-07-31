@@ -5,8 +5,8 @@ export default function QuickActions() {
       <div className="space-y-3">
         <button className="w-full flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 transition">
           <div className="flex items-center">
-            <div className="bg-green-900/10 p-2 rounded-lg mr-3">
-              <i className="fa-solid fa-plus text-green-900"></i>
+            <div className="bg-primary/10 p-2 rounded-lg mr-3">
+              <i className="fa-solid fa-plus text-primary"></i>
             </div>
             <span>New Reservation</span>
           </div>
@@ -14,8 +14,8 @@ export default function QuickActions() {
         </button>
         <button className="w-full flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 transition">
           <div className="flex items-center">
-            <div className="bg-green-900/10 p-2 rounded-lg mr-3">
-              <i className="fa-solid fa-message text-green-900"></i>
+            <div className="bg-primary/10 p-2 rounded-lg mr-3">
+              <i className="fa-solid fa-message text-primary"></i>
             </div>
             <span>Send Reminder</span>
           </div>
@@ -23,8 +23,8 @@ export default function QuickActions() {
         </button>
         <button className="w-full flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 transition">
           <div className="flex items-center">
-            <div className="bg-green-900/10 p-2 rounded-lg mr-3">
-              <i className="fa-solid fa-table text-green-900"></i>
+            <div className="bg-primary/10 p-2 rounded-lg mr-3">
+              <i className="fa-solid fa-table text-primary"></i>
             </div>
             <span>Manage Tables</span>
           </div>

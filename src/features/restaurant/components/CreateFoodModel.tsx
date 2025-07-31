@@ -201,7 +201,7 @@ export const CreateFoodModal = ({
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-green-900 text-white rounded-lg"
+                            className="px-4 py-2 bg-primary text-white rounded-lg"
                             disabled={uploading}
                         >
                             {uploading ? "Creating..." : "Create Food"}

@@ -34,7 +34,7 @@ const OrderActions: React.FC<Props> = ({ idOrder, currentStatus, onStatusChange 
             </div>
             <div className="p-6 flex flex-wrap gap-4">
                 <button
-                    className={`px-4 py-2 bg-green-900 text-white rounded-lg flex items-center ${isReadyDisabled ? "opacity-60 cursor-not-allowed" : "hover:bg-green-800"
+                    className={`px-4 py-2 bg-primary text-white rounded-lg flex items-center ${isReadyDisabled ? "opacity-60 cursor-not-allowed" : "hover:bg-primary/80"
                         }`}
                     disabled={isReadyDisabled}
                     onClick={() => handleStatusChange("completed")}

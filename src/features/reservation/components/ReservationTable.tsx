@@ -27,7 +27,7 @@ type Props = {
 function formatStatus(status: string): { label: Reservation["status"]; color: string } {
     switch (status.toLowerCase()) {
         case "confirmed":
-            return { label: "Confirmed", color: "bg-green-100 text-green-800" };
+            return { label: "Confirmed", color: "bg-primary-light text-primary/80" };
         case "pending":
             return { label: "Pending", color: "bg-yellow-100 text-yellow-800" };
         case "cancelled":
@@ -64,8 +64,8 @@ function getInitials(fullName: string) {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-function formatTableNumber(tableId: string) {
-    if (!tableId) return "N/A";
+function formatTableNumber(tableId: string | null | undefined) {
+    if (!tableId) return null;
     
     // If the tableId is in format like "table-1" or "T1", extract the number
     const match = tableId.match(/(\d+)/);
@@ -171,24 +171,31 @@ export default function ReservationTable({ idRestaurant, filters }: Props) {
             const response: ApiResponse = await getRestaurantReservations(idRestaurant, page);
             setTotalPages(response.totalPages ?? 1);
             setTotalCount(response.totalCount ?? 0);
-            const mappedReservations = (response.reservations || []).map((r) => {
-                const status = formatStatus(r.status);
-                return {
-                    idReservation: r.idReservation,
-                    avatar: r.fullName,
-                    name: r.fullName,
-                    email: r.email || "",
-                    time: formatTime(r.timeFrom),
-                    meal: formatMeal(r.timeFrom),
-                    table: r.tableId,
-                    guests: `${r.numberOfPeople} people`,
-                    special: r.special || "",
-                    status: status.label,
-                    statusColor: status.color,
-                    createdAt: r.createdAt,
-                    timeFrom: r.timeFrom,
-                };
-            });
+            const mappedReservations = (response.reservations || [])
+                .map((r) => {
+                    try {
+                        const status = formatStatus(r.status);
+                        return {
+                            idReservation: r.idReservation || '',
+                            avatar: r.fullName || 'Unknown',
+                            name: r.fullName || 'Unknown',
+                            email: r.email || "",
+                            time: formatTime(r.timeFrom),
+                            meal: formatMeal(r.timeFrom),
+                            table: (r.tableId && r.tableId !== "null" && r.tableId !== "") ? r.tableId : null,
+                            guests: `${r.numberOfPeople || 0} people`,
+                            special: r.special || "",
+                            status: status.label,
+                            statusColor: status.color,
+                            createdAt: r.createdAt || '',
+                            timeFrom: r.timeFrom || '',
+                        };
+                    } catch (e) {
+                        console.warn('Error processing reservation:', r, e);
+                        return null;
+                    }
+                })
+                .filter(Boolean); // Remove null entries
             setAllReservations(mappedReservations);
             setReservations(filterReservations(mappedReservations, filters));
         } catch (e) {
@@ -237,7 +244,7 @@ export default function ReservationTable({ idRestaurant, filters }: Props) {
                             <i className="fa-solid fa-download mr-2"></i>
                             Export
                         </button>
-                        <button className="text-sm bg-green-900 text-white hover:bg-green-900/90 px-4 py-2 rounded-lg flex items-center transition">
+                        <button className="text-sm bg-primary text-white hover:bg-primary/90 px-4 py-2 rounded-lg flex items-center transition">
                             <i className="fa-solid fa-plus mr-2"></i>
                             Add New
                         </button>
@@ -282,7 +289,13 @@ export default function ReservationTable({ idRestaurant, filters }: Props) {
                                                 <div className="text-gray-500 text-sm">{r.meal}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className="bg-light text-green-900 text-sm font-medium px-3 py-1 rounded-full">{formatTableNumber(r.table)}</span>
+                                                <span className={`text-sm font-medium px-3 py-1 rounded-full ${
+                                                    formatTableNumber(r.table) 
+                                                        ? 'bg-light text-primary' 
+                                                        : 'bg-gray-100 text-gray-600'
+                                                }`}>
+                                                    {formatTableNumber(r.table) || 'Unassigned'}
+                                                </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">
                                                 <div className="flex items-center">
@@ -319,7 +332,7 @@ export default function ReservationTable({ idRestaurant, filters }: Props) {
                         {[...Array(totalPages)].map((_, idx) => (
                             <button
                                 key={idx}
-                                className={`px-3 py-1 rounded ${page === idx + 1 ? "bg-green-900 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200 transition"}`}
+                                className={`px-3 py-1 rounded ${page === idx + 1 ? "bg-primary text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200 transition"}`}
                                 onClick={() => goToPage(idx + 1)}
                             >
                                 {idx + 1}

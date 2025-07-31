@@ -77,7 +77,7 @@ const OrderHistory: React.FC<{ reservation: ReservationDetails }> = ({ reservati
                                     {new Date(order.createdAt).toLocaleDateString()} ({order.itemCount} items)
                                 </div>
                             </div>
-                            <div className="font-bold text-green-900">
+                            <div className="font-bold text-primary">
                                 {typeof order.totalPrice === "number"
                                     ? `$${order.totalPrice.toFixed(2)}`
                                     : "N/A"}
@@ -145,7 +145,7 @@ const ReservationDetailsPage: React.FC<Props> = ({
     onClose
 }) => {
     const statusMap: Record<string, { label: string, color: string }> = {
-        confirmed: { label: "Confirmed", color: "bg-green-100 text-green-800" },
+        confirmed: { label: "Confirmed", color: "bg-primary-light text-primary/80" },
         pending: { label: "Pending", color: "bg-yellow-100 text-yellow-800" },
         cancelled: { label: "Cancelled", color: "bg-red-100 text-red-800" },
         completed: { label: "Completed", color: "bg-blue-100 text-blue-800" },
@@ -276,7 +276,7 @@ const ReservationDetailsPage: React.FC<Props> = ({
                     <div className="mb-5">
                         <p className="text-gray-700 mb-2">Current Status</p>
                         <div className="flex items-center">
-                            <span className="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span>
+                            <span className="inline-block w-3 h-3 rounded-full bg-primary/50 mr-2"></span>
                             <span className="font-medium">
                                 Verified at {time} by {reservation.fullName}
                             </span>
@@ -296,7 +296,7 @@ const ReservationDetailsPage: React.FC<Props> = ({
                                 />
                             </div>
                             <button
-                                className="bg-green-900 hover:bg-green-900/90 text-white px-4 py-2 rounded-lg font-medium transition flex items-center justify-center"
+                                className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-medium transition flex items-center justify-center"
                                 onClick={confirmReservation}
                                 disabled={!canConfirm || statusLoading || status === "confirmed" || status === "completed"}
                             >

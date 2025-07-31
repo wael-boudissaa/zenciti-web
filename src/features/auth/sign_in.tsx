@@ -19,7 +19,7 @@ const SignInPage: React.FC<SignInPageProps> = ({ onLogin }) => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-green-900 relative overflow-hidden font-sans">
+        <div className="min-h-screen flex items-center justify-center bg-primary relative overflow-hidden font-sans">
             <SignInBackground />
             <SignInCard onSignInSuccess={handleSignInSuccess} />
         </div>

@@ -34,7 +34,7 @@ const TableAvailability = ({ idRestaurant }) => {
                     <h3 className="font-bold text-lg">Table Availability</h3>
                     <div className="flex space-x-2">
                         <button className="text-sm bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg">Today</button>
-                        <button className="text-sm bg-green-900 text-white hover:bg-green-900/90 px-4 py-2 rounded-lg flex items-center" onClick={() => navigate(`/table`)}>
+                        <button className="text-sm bg-primary text-white hover:bg-primary/90 px-4 py-2 rounded-lg flex items-center" onClick={() => navigate(`/table`)}>
                             <FontAwesomeIcon icon={faTableCells} className="mr-2" />
                             View Floor Plan
                         </button>

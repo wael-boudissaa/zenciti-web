@@ -8,7 +8,7 @@ export default function ReservationSummary() {
           <span className="font-medium">18</span>
         </div>
         <div className="w-full bg-gray-100 rounded-full h-2">
-          <div className="bg-green-500 h-2 rounded-full" style={{ width: "75%" }}></div>
+          <div className="bg-primary/50 h-2 rounded-full" style={{ width: "75%" }}></div>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-gray-600">Today's Pending</span>
@@ -22,10 +22,10 @@ export default function ReservationSummary() {
           <span className="font-medium">87</span>
         </div>
         <div className="w-full bg-gray-100 rounded-full h-2">
-          <div className="bg-green-900 h-2 rounded-full" style={{ width: "60%" }}></div>
+          <div className="bg-primary h-2 rounded-full" style={{ width: "60%" }}></div>
         </div>
         <div className="pt-2">
-          <button className="w-full text-center text-green-900 font-medium hover:underline">
+          <button className="w-full text-center text-primary font-medium hover:underline">
             View Detailed Analytics
           </button>
         </div>

@@ -3,7 +3,7 @@ import React from "react";
 const timeline = [
   {
     icon: "fa-check",
-    bg: "bg-green-500",
+    bg: "bg-primary500",
     title: "Order Placed",
     time: "June 7, 2023 - 12:42 PM",
     desc: "Customer placed the order through mobile app",
@@ -11,7 +11,7 @@ const timeline = [
   },
   {
     icon: "fa-check",
-    bg: "bg-green-500",
+    bg: "bg-primary500",
     title: "Payment Confirmed",
     time: "June 7, 2023 - 12:44 PM",
     desc: "Payment of $74.50 was processed successfully",

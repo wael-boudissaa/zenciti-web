@@ -21,8 +21,8 @@ export const OverallRatingCard: React.FC<OverallRatingCardProps> = ({
 }) => {
     // Map ratings to display bars
     const stars = [
-        { label: 5, color: "bg-green-500", percent: percentage5Stars },
-        { label: 4, color: "bg-green-400", percent: percentage4Stars },
+        { label: 5, color: "bg-green-900", percent: percentage5Stars },
+        { label: 4, color: "bg-primary", percent: percentage4Stars },
         { label: 3, color: "bg-yellow-500", percent: percentage3Stars },
         { label: 2, color: "bg-orange-500", percent: percentage2Stars },
         { label: 1, color: "bg-red-500", percent: percentage1Star },

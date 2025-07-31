@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getMenuStats, type MenuStats } from "../hooks/hooks";
+import { getMenuStats, getFoodOfMenuActive, getCategoryFoodOfRestaurant, getRestaurantInformation, type MenuStats } from "../hooks/hooks";
+import { generateMenuPDF, type MenuPDFData } from "../../../utils/pdfGenerator";
 import CreateFoodModal from "./CreateFoodModel";
 export const MenuStatsSidebar = ({ idRestaurant }) => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showCreateFoodModal, setShowCreateFoodModal] = useState(false);
+    const [isPrintingMenu, setIsPrintingMenu] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -15,6 +17,39 @@ export const MenuStatsSidebar = ({ idRestaurant }) => {
             })
             .catch(() => setLoading(false));
     }, [idRestaurant]);
+
+    const handlePrintMenu = async () => {
+        if (isPrintingMenu) return;
+        
+        setIsPrintingMenu(true);
+        try {
+            // Fetch all required data in parallel
+            const [restaurantInfo, categories, activeMenuItems] = await Promise.all([
+                getRestaurantInformation(idRestaurant),
+                getCategoryFoodOfRestaurant(idRestaurant),
+                getFoodOfMenuActive(idRestaurant)
+            ]);
+
+            if (!restaurantInfo || !categories || !activeMenuItems) {
+                throw new Error('Failed to fetch menu data');
+            }
+
+            const pdfData: MenuPDFData = {
+                restaurantName: restaurantInfo.name || 'Restaurant',
+                menuName: stats?.activeMenuName || 'Current Menu',
+                categories: categories,
+                items: activeMenuItems
+            };
+
+            // Generate PDF instantly (no image loading)
+            generateMenuPDF(pdfData);
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Failed to generate menu PDF. Please try again.');
+        } finally {
+            setIsPrintingMenu(false);
+        }
+    };
 
     if (loading || !stats) {
         return (
@@ -65,11 +100,16 @@ export const MenuStatsSidebar = ({ idRestaurant }) => {
                     <h3 className="font-bold text-lg">Quick Actions</h3>
                 </div>
                 <div className="p-6 space-y-3">
-                    <button className="w-full px-4 py-2 bg-green-900 text-white rounded-lg text-sm flex items-center justify-center">
-                        <i className="fa-solid fa-print mr-2"></i> Print Current Menu
+                    <button 
+                        className="w-full px-4 py-2 bg-primary text-white rounded-lg text-sm flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={handlePrintMenu}
+                        disabled={isPrintingMenu}
+                    >
+                        <i className={`fa-solid ${isPrintingMenu ? 'fa-spinner fa-spin' : 'fa-print'} mr-2`}></i> 
+                        {isPrintingMenu ? 'Generating PDF...' : 'Print Elegant Menu'}
                     </button>
                     <button
-                        className="w-full px-4 py-2 bg-green-900 text-white rounded-lg text-sm flex items-center justify-center"
+                        className="w-full px-4 py-2 bg-primary text-white rounded-lg text-sm flex items-center justify-center"
                         onClick={() => setShowCreateFoodModal(true)}
                     >
                         <i className="fa-solid fa-plus mr-2"></i> Create Food

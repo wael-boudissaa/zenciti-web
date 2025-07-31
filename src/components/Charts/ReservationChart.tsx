@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, LineElement, CategoryScale, LinearScale, PointElement, Filler, Tooltip, Legend } from "chart.js";
 import { getReservationLastMonth } from "../../features/dashboard/hooks/hooks_reservation";
-import type { ReservationLastMonth } from "../../features/dashboard/hooks/hooks_reservation";
+import type { ChartData } from 'chart.js';
 
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement, Filler, Tooltip, Legend);
 
@@ -12,10 +12,14 @@ const chartOptions = {
     scales: {
         y: {
             beginAtZero: true,
-            grid: { drawBorder: false },
+            ticks: {
+                stepSize: 1,
+                callback: function(value: any) {
+                    return Math.floor(value);
+                }
+            }
         },
         x: {
-            grid: { display: false },
         },
     },
     plugins: { legend: { display: false } },
@@ -33,7 +37,7 @@ function formatDayLabel(dateStr: string, mode: "7" | "30") {
 
 const ReservationsChart: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) => {
     const [period, setPeriod] = useState<"7" | "30">("7");
-    const [chartData, setChartData] = useState<ReservationLastMonth>({
+    const [chartData, setChartData] = useState<ChartData<"line">>({
          labels: [],
         datasets: [
             {
@@ -67,7 +71,8 @@ const ReservationsChart: React.FC<{ idRestaurant: string }> = ({ idRestaurant })
                 d.setDate(now.getDate() - i);
                 const key = d.toISOString().slice(0, 10); // "YYYY-MM-DD"
                 labels.push(formatDayLabel(d.toISOString(), period));
-                data.push(resMap.get(key) || 0);
+                // Ensure integer values for reservation counts
+                data.push(Math.floor(resMap.get(key) || 0));
             }
 
             if (isMounted) {

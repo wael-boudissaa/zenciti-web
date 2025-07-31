@@ -53,13 +53,13 @@ const StaffPage = ({ idRestaurant }) => {
             <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center">
                     <h2 className="text-xl font-bold">Staff Overview</h2>
-                    <span className="ml-2 bg-green-900 bg-opacity-10 text-white px-2 py-1 rounded text-sm font-medium">
+                    <span className="ml-2 bg-primary bg-opacity-10 text-white px-2 py-1 rounded text-sm font-medium">
                         {staffRows.length} Total
                     </span>
                 </div>
                 <button
                     onClick={() => setAddModalOpen(true)}
-                    className="px-4 py-2 bg-green-900 text-white rounded-lg flex items-center"
+                    className="px-4 py-2 bg-primary text-white rounded-lg flex items-center"
                 >
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white bg-opacity-20 mr-2">
                         <i className="fa-solid fa-plus text-green-900"></i>

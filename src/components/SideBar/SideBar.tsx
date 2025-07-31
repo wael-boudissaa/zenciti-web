@@ -27,8 +27,8 @@ const Sidebar: React.FC = () => {
     const { logout } = useAuth()
 
     return (
-        <div className="w-64 min-h-screen bg-green-900 text-white flex flex-col">
-            <div className="p-6 border-b border-green-900-700">
+        <div className="w-64 min-h-screen bg-primary text-white flex flex-col">
+            <div className="p-6 border-b border-primary/70">
                 <h1 className="text-3xl font-bold tracking-wider">ZENCITI</h1>
             </div>
             <nav className="flex-1 py-6 flex flex-col">

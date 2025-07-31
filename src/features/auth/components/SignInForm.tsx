@@ -27,7 +27,7 @@ export const SignInForm: React.FC<Props> = ({ onSignIn, loading }) => {
                 <input
                     type="email"
                     id="email"
-                    className="w-full px-4 py-3 rounded-md bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-900 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-md bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="example@email.com"
                     autoFocus
                     required
@@ -42,7 +42,7 @@ export const SignInForm: React.FC<Props> = ({ onSignIn, loading }) => {
                     <label htmlFor="password" className="block text-gray-700">
                         Password
                     </label>
-                    <span className="text-sm text-green-900 hover:underline cursor-pointer">
+                    <span className="text-sm text-primary hover:underline cursor-pointer">
                         Forgot Password?
                     </span>
                 </div>
@@ -50,7 +50,7 @@ export const SignInForm: React.FC<Props> = ({ onSignIn, loading }) => {
                     <input
                         type={showPassword ? "text" : "password"}
                         id="password"
-                        className="w-full px-4 py-3 rounded-md bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-900 focus:border-transparent pr-12"
+                        className="w-full px-4 py-3 rounded-md bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-12"
                         placeholder="••••••••"
                         required
                         value={password}
@@ -59,7 +59,7 @@ export const SignInForm: React.FC<Props> = ({ onSignIn, loading }) => {
                     />
                     <button
                         type="button"
-                        className="absolute right-3 cursor-pointer top-1/2 -translate-y-1/2 flex items-center text-gray-400 hover:text-green-900"
+                        className="absolute right-3 cursor-pointer top-1/2 -translate-y-1/2 flex items-center text-gray-400 hover:text-primary"
                         tabIndex={-1}
                         onClick={() => setShowPassword(v => !v)}
                         aria-label={showPassword ? "Hide password" : "Show password"}
@@ -75,7 +75,7 @@ export const SignInForm: React.FC<Props> = ({ onSignIn, loading }) => {
             <button
                 type="submit"
                 disabled={loading || !email || !password}
-                className="w-full py-3 px-4 bg-green-900 hover:bg-green-900/90 text-white font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-900 disabled:bg-primary/50"
+                className="w-full py-3 px-4 bg-primary hover:bg-primary/90 text-white font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:bg-primary/50"
             >
                 {loading ? (
                     <span>
