@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://localhost:8081";
 
 export type ApiResponse<T> = {
     data: T;
@@ -10,6 +10,7 @@ export type ApiResponse<T> = {
 
 type Options = Omit<RequestInit, "body" | "method"> & {
     headers?: Record<string, string>;
+    suppressToast?: boolean;
 };
 
 // Helper to build headers and handle JSON content
@@ -21,18 +22,22 @@ function getHeaders(headers?: Record<string, string>) {
 }
 
 // General fetch wrapper with error toast
-async function request<T>(url: string, options: RequestInit): Promise<T> {
+async function request<T>(url: string, options: RequestInit & { suppressToast?: boolean }): Promise<T> {
     try {
         const res = await fetch(BASE_URL + url, options);
         if (!res.ok) {
             const errorText = await res.text();
-            toast.error(errorText || `Request failed: ${res.status}`);
+            if (!options.suppressToast) {
+                toast.error(errorText || `Request failed: ${res.status}`);
+            }
             throw new Error(errorText || `Request failed: ${res.status}`);
         }
         if (res.status === 204) return null as unknown as T;
         return res.json();
     } catch (error: any) {
-        toast.error(error?.message || "Unknown error occurred");
+        if (!options.suppressToast) {
+            toast.error(error?.message || "Unknown error occurred");
+        }
         throw error;
     }
 }
@@ -42,6 +47,7 @@ export async function apiGet<T>(url: string, options?: Options): Promise<T> {
     const result = await request<ApiResponse<T>>(url, {
         method: "GET",
         headers: getHeaders(options?.headers),
+        suppressToast: options?.suppressToast,
         ...options,
     });
     return result.data;

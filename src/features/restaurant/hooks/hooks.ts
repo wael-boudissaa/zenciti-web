@@ -138,8 +138,28 @@ export function getRestaurantStaff(idRestaurant: string) {
     return apiGet<StaffMember[]>(`/restaurant/workers/${idRestaurant}`);
 }
 
-export function getRestaurantStats(idRestaurant: string) {
-    return apiGet<RestaurantRatingStats>(`/restaurant/stats/${idRestaurant}`);
+export async function getRestaurantStats(idRestaurant: string): Promise<RestaurantRatingStats> {
+    try {
+        return await apiGet<RestaurantRatingStats>(`/restaurant/stats/${idRestaurant}`, { suppressToast: true });
+    } catch (error: any) {
+        // Handle the specific case where overallAverage is NULL in database
+        if (error?.message?.includes('converting NULL to float64') || 
+            error?.message?.includes('overallAverage')) {
+            // Return default stats when no rating data exists
+            return {
+                monthlyStats: [],
+                overallAverage: 0,
+                totalRatings: 0,
+                percentage5Stars: 0,
+                percentage4Stars: 0,
+                percentage3Stars: 0,
+                percentage2Stars: 0,
+                percentage1Star: 0,
+            };
+        }
+        // Re-throw other errors
+        throw error;
+    }
 }
 
 export function getMenuRestaurant(idRestaurant: string) {

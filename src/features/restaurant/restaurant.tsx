@@ -48,8 +48,24 @@ const RestaurantProfilePage: React.FC = () => {
                 setLoading(false);
 
             }
-            catch (err) {
-                setError(`Failed to load stats ratings.${err}`);
+            catch (err: any) {
+                // Don't show error for NULL rating data cases - they're handled in the hook
+                if (err?.message?.includes('converting NULL to float64') || 
+                    err?.message?.includes('overallAverage')) {
+                    // Set default stats and don't show error
+                    setRestaurantStats({
+                        monthlyStats: [],
+                        overallAverage: 0,
+                        totalRatings: 0,
+                        percentage5Stars: 0,
+                        percentage4Stars: 0,
+                        percentage3Stars: 0,
+                        percentage2Stars: 0,
+                        percentage1Star: 0,
+                    });
+                } else {
+                    setError(`Failed to load stats ratings.${err}`);
+                }
                 setLoading(false);
             }
         }

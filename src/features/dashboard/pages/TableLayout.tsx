@@ -6,7 +6,7 @@ import {
     faCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { updateTableLayout } from "../hooks/hooks";
+import { updateTableLayout, getTablesByRestaurant } from "../hooks/hooks";
 import { useAuth } from "../../../app/context";
 
 // Types from your backend API
@@ -41,6 +41,33 @@ export default function TableFloorPlanEditor() {
     const [draggedId, setDraggedId] = useState<string | null>(null);
     const [dragOffset, setDragOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
     const [saving, setSaving] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    // Load existing tables on component mount
+    useEffect(() => {
+        if (!RESTAURANT_ID) return;
+        
+        setLoading(true);
+        getTablesByRestaurant(RESTAURANT_ID)
+            .then(backendTables => {
+                const convertedTables: TableObj[] = backendTables.map((backendTable, index) => ({
+                    id: backendTable.idTable || `T${index + 1}`,
+                    shape: backendTable.shape as TableShape,
+                    x: backendTable.posX,
+                    y: backendTable.posY,
+                    size: 80, // Default size
+                    capacity: backendTable.shape === "square" ? 4 : 6,
+                    is_available: backendTable.is_available
+                }));
+                setTables(convertedTables);
+            })
+            .catch(err => {
+                console.error("Failed to load existing tables:", err);
+                // Start with empty tables if loading fails
+                setTables([]);
+            })
+            .finally(() => setLoading(false));
+    }, [RESTAURANT_ID]);
 
     const getNextTableId = () => `T${tables.length + 1}`;
 
@@ -119,8 +146,23 @@ export default function TableFloorPlanEditor() {
         }
     };
 
-    const handleReset = () => {
-        if (window.confirm("Reset all tables?")) setTables([]);
+    const handleReset = async () => {
+        if (!window.confirm("Reset all tables? This will permanently remove all table positions from the backend.")) {
+            return;
+        }
+        
+        setSaving(true);
+        try {
+            // Clear tables in backend by sending empty array
+            await updateTableLayout(RESTAURANT_ID, []);
+            // Clear local state
+            setTables([]);
+            alert("Table layout has been reset successfully!");
+        } catch (e: any) {
+            alert("Error resetting tables: " + (e?.message ?? e));
+        } finally {
+            setSaving(false);
+        }
     };
 
     return (
@@ -207,6 +249,14 @@ export default function TableFloorPlanEditor() {
                                             touchAction: "none",
                                         }}
                                     >
+                                        {loading && (
+                                            <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-20">
+                                                <div className="text-center">
+                                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-900 mx-auto mb-2"></div>
+                                                    <p className="text-sm text-gray-600">Loading table layout...</p>
+                                                </div>
+                                            </div>
+                                        )}
                                         <svg
                                             width={CANVAS_WIDTH}
                                             height={CANVAS_HEIGHT}

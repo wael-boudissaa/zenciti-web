@@ -43,3 +43,7 @@ export function updateTableLayout(idRestaurant: string, data: BackendTable[]) {
     return apiPut<DataTableBackend>(`/restaurant/${idRestaurant}/tables/bulk`, { data });
 }
 
+export function getTablesByRestaurant(idRestaurant: string) {
+    return apiGet<DataTableBackend[]>(`/tables/${idRestaurant}`);
+}
+

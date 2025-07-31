@@ -18,9 +18,8 @@ const HomePage: React.FC = () => {
                 <Header />
                 <div className="p-6">
                     <StatsCards idRestaurant={idRestaurant} />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div className=" md:grid-cols-2 gap-6 mb-8">
                         <ReservationsChart idRestaurant={idRestaurant} />
-                        <OccupancyChart />
                     </div>
                     <ReservationList idRestaurant={idRestaurant} />
                     <TableAvailability idRestaurant={idRestaurant} />

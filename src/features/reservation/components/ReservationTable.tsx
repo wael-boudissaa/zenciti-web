@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ReservationDetailsPage from "../reservation_details";
 import { getRestaurantReservations, type ApiResponse } from "../hooks/hooks";
+import type { FilterState } from "./ReservationFilters";
 
 type Reservation = {
     idReservation: string;
@@ -20,6 +21,7 @@ type Reservation = {
 
 type Props = {
     idRestaurant: string;
+    filters?: FilterState;
 };
 
 function formatStatus(status: string): { label: Reservation["status"]; color: string } {
@@ -62,7 +64,25 @@ function getInitials(fullName: string) {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-export default function ReservationTable({ idRestaurant }: Props) {
+function formatTableNumber(tableId: string) {
+    if (!tableId) return "N/A";
+    
+    // If the tableId is in format like "table-1" or "T1", extract the number
+    const match = tableId.match(/(\d+)/);
+    if (match) {
+        return `Table ${match[1]}`;
+    }
+    
+    // If it's already in a good format or short, return as is
+    if (tableId.length <= 3) {
+        return `Table ${tableId}`;
+    }
+    
+    // For long IDs, show first few characters
+    return `Table ${tableId.substring(0, 3)}...`;
+}
+
+export default function ReservationTable({ idRestaurant, filters }: Props) {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
     const [modalData, setModalData] = useState<Reservation | null>(null);
     const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -70,6 +90,80 @@ export default function ReservationTable({ idRestaurant }: Props) {
     const [totalPages, setTotalPages] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [allReservations, setAllReservations] = useState<Reservation[]>([]);
+
+    const filterReservations = useCallback((reservations: Reservation[], filters?: FilterState) => {
+        if (!filters) return reservations;
+
+        return reservations.filter(reservation => {
+            // Status filter
+            if (filters.status !== "All Statuses" && reservation.status !== filters.status) {
+                return false;
+            }
+
+            // Table size filter
+            if (filters.tableSize !== "All Sizes") {
+                const guestCount = parseInt(reservation.guests.split(" ")[0]);
+                switch (filters.tableSize) {
+                    case "1-2 People":
+                        if (guestCount < 1 || guestCount > 2) return false;
+                        break;
+                    case "3-4 People":
+                        if (guestCount < 3 || guestCount > 4) return false;
+                        break;
+                    case "5-6 People":
+                        if (guestCount < 5 || guestCount > 6) return false;
+                        break;
+                    case "7+ People":
+                        if (guestCount < 7) return false;
+                        break;
+                }
+            }
+
+            // Time slot filter
+            if (filters.timeSlot !== "All Times") {
+                const reservationTime = new Date(reservation.timeFrom);
+                const hour = reservationTime.getHours();
+                
+                switch (filters.timeSlot) {
+                    case "Breakfast (6-10 AM)":
+                        if (hour < 6 || hour >= 10) return false;
+                        break;
+                    case "Lunch (11 AM-2 PM)":
+                        if (hour < 11 || hour >= 14) return false;
+                        break;
+                    case "Dinner (5-10 PM)":
+                        if (hour < 17 || hour >= 22) return false;
+                        break;
+                }
+            }
+
+            // Date range filter (simplified - just Today for now)
+            if (filters.dateRange !== "Today") {
+                const reservationDate = new Date(reservation.timeFrom);
+                const today = new Date();
+                
+                switch (filters.dateRange) {
+                    case "Tomorrow": {
+                        const tomorrow = new Date(today);
+                        tomorrow.setDate(today.getDate() + 1);
+                        if (reservationDate.toDateString() !== tomorrow.toDateString()) return false;
+                        break;
+                    }
+                    case "This Week": {
+                        const weekStart = new Date(today);
+                        weekStart.setDate(today.getDate() - today.getDay());
+                        const weekEnd = new Date(weekStart);
+                        weekEnd.setDate(weekStart.getDate() + 6);
+                        if (reservationDate < weekStart || reservationDate > weekEnd) return false;
+                        break;
+                    }
+                }
+            }
+
+            return true;
+        });
+    }, []);
 
     const fetchReservations = useCallback(async () => {
         setLoading(true);
@@ -77,26 +171,26 @@ export default function ReservationTable({ idRestaurant }: Props) {
             const response: ApiResponse = await getRestaurantReservations(idRestaurant, page);
             setTotalPages(response.totalPages ?? 1);
             setTotalCount(response.totalCount ?? 0);
-            setReservations(
-                (response.reservations || []).map((r) => {
-                    const status = formatStatus(r.status);
-                    return {
-                        idReservation: r.idReservation,
-                        avatar: r.fullName,
-                        name: r.fullName,
-                        email: r.email || "",
-                        time: formatTime(r.timeFrom),
-                        meal: formatMeal(r.timeFrom),
-                        table: r.tableId,
-                        guests: `${r.numberOfPeople} people`,
-                        special: r.special || "",
-                        status: status.label,
-                        statusColor: status.color,
-                        createdAt: r.createdAt,
-                        timeFrom: r.timeFrom,
-                    };
-                })
-            );
+            const mappedReservations = (response.reservations || []).map((r) => {
+                const status = formatStatus(r.status);
+                return {
+                    idReservation: r.idReservation,
+                    avatar: r.fullName,
+                    name: r.fullName,
+                    email: r.email || "",
+                    time: formatTime(r.timeFrom),
+                    meal: formatMeal(r.timeFrom),
+                    table: r.tableId,
+                    guests: `${r.numberOfPeople} people`,
+                    special: r.special || "",
+                    status: status.label,
+                    statusColor: status.color,
+                    createdAt: r.createdAt,
+                    timeFrom: r.timeFrom,
+                };
+            });
+            setAllReservations(mappedReservations);
+            setReservations(filterReservations(mappedReservations, filters));
         } catch (e) {
             setReservations([]);
         }
@@ -106,6 +200,11 @@ export default function ReservationTable({ idRestaurant }: Props) {
     useEffect(() => {
         if (idRestaurant) fetchReservations();
     }, [idRestaurant, page, fetchReservations]);
+
+    // Apply filters when filters change
+    useEffect(() => {
+        setReservations(filterReservations(allReservations, filters));
+    }, [filters, allReservations, filterReservations]);
 
     const handleRowClick = (reservation: Reservation, index: number) => {
         setModalData(reservation);
@@ -183,7 +282,7 @@ export default function ReservationTable({ idRestaurant }: Props) {
                                                 <div className="text-gray-500 text-sm">{r.meal}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className="bg-light text-green-900 text-sm font-medium px-3 py-1 rounded-full">{r.table}</span>
+                                                <span className="bg-light text-green-900 text-sm font-medium px-3 py-1 rounded-full">{formatTableNumber(r.table)}</span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">
                                                 <div className="flex items-center">
