@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/SideBar/SideBar";
 import Header from "../../components/Header/Header";
 import OrderStats from "./components/OrderStats";
 import OrderAnalytics from "./components/OrderAnalytics";
@@ -7,6 +6,7 @@ import OrdersTable from "./components/OrderTables";
 import PopularItems from "./components/PopulaireItems";
 import { getRestaurantOrderInformation, type OrdersStatsResponse } from "./hooks/hoos_order_page";
 import { useAuth } from "../../app/context";
+import Sidebar from "../../components/SideBar/SideBar";
 
 const OrdersPage: React.FC = () => {
     const [loading, setLoading] = useState(true);

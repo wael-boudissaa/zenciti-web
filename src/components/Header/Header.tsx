@@ -13,8 +13,8 @@ const Header: React.FC = () => {
             </div>
             <div className="flex items-center space-x-4">
                 <div className="relative">
-                    <FontAwesomeIcon icon={faBell} className="text-gray-600 text-xl" />
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                    {/* <FontAwesomeIcon icon={faBell} className="text-gray-600 text-xl" /> */}
+                    {/* <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span> */}
                 </div>
                 <div className="flex items-center space-x-2">
                     <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-semibold">IR</div>

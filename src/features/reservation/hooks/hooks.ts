@@ -51,6 +51,8 @@ export type ReservationDetails = {
     favoriteFood: string;
     totalOrders: number;
     orders: Order[];
+    idRestaurantWorker?: string;
+    workerName?: string;
 };
 
 export function getReservationDetails(idReservation: string) {

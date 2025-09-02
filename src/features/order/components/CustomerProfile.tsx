@@ -17,7 +17,6 @@ const CustomerProfile: React.FC<ProfileProps> = ({ profile, totalOrders, totalSp
     return (
         <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
             <div className="flex items-center">
-                <img className="h-16 w-16 rounded-full mr-6" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Customer Avatar" />
                 <div>
                     <h2 className="text-2xl font-bold mb-1">{profile.firstName} {profile.lastName}</h2>
                     <div className="flex items-center text-gray-500 space-x-4">

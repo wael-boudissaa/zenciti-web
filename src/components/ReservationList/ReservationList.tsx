@@ -224,14 +224,14 @@ const ReservationList: React.FC<{ idRestaurant: string }> = ({ idRestaurant }) =
                 <div className="flex justify-between items-center">
                     <h3 className="font-bold text-lg">Reservation List</h3>
                     <div className="flex space-x-2">
-                        <button className="text-sm bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg flex items-center">
-                            <FontAwesomeIcon icon={faFilter} className="mr-2" />
-                            Filter
-                        </button>
-                        <button className="text-sm bg-primary text-white hover:bg-primary/90 px-4 py-2 rounded-lg flex items-center">
-                            <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                            Add New
-                        </button>
+                        {/* <button className="text-sm bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg flex items-center"> */}
+                        {/*     <FontAwesomeIcon icon={faFilter} className="mr-2" /> */}
+                        {/*     Filter */}
+                        {/* </button> */}
+                        {/* <button className="text-sm bg-primary text-white hover:bg-primary/90 px-4 py-2 rounded-lg flex items-center"> */}
+                        {/*     <FontAwesomeIcon icon={faPlus} className="mr-2" /> */}
+                        {/*     Add New */}
+                        {/* </button> */}
                     </div>
                 </div>
             </div>

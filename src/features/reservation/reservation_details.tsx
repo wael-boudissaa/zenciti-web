@@ -250,6 +250,15 @@ const ReservationDetailsPage: React.FC<Props> = ({
                             <p className="font-medium">{partySize}</p>
                         </div>
                     </div>
+                    <div className="border rounded-lg p-4">
+                        <p className="text-sm text-gray-500 mb-1">Assigned Server</p>
+                        <div className="flex items-center">
+                            <i className="fa-solid fa-user-tie text-primary mr-2"></i>
+                            <p className="font-medium">
+                                {reservation.workerName || 'No server assigned'}
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 {/* Reservation ID on its own beautiful line */}
                 <div className="border rounded-lg p-4 mt-4 flex flex-col items-start">

@@ -30,11 +30,6 @@ const OrderSummary: React.FC<Props> = ({ order, loading }) => {
         <div className="flex flex-wrap">
             <div className="w-full lg:w-2/3 pr-0 lg:pr-8">
                 <div className="flex items-center mb-6">
-                    <img
-                        className="h-16 w-16 rounded-full mr-6"
-                        src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg"
-                        alt="Customer Avatar"
-                    />
                     <div>
                         <h2 className="text-xl font-bold mb-1">
                             {order.clientFirstName} {order.clientLastName}
