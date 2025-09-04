@@ -52,7 +52,7 @@ function formatDay(dateStr: string) {
 function formatMeal(dateStr: string) {
     const d = new Date(dateStr);
     const h = d.getHours();
-    if (h < 11) return "Breakfast";
+    // if (h < 11) return "Breakfast";
     if (h < 16) return "Lunch";
     return "Dinner";
 }
@@ -126,9 +126,9 @@ export default function ReservationTable({ idRestaurant, filters }: Props) {
                 const hour = reservationTime.getHours();
                 
                 switch (filters.timeSlot) {
-                    case "Breakfast (6-10 AM)":
-                        if (hour < 6 || hour >= 10) return false;
-                        break;
+                    // case "Breakfast (6-10 AM)":
+                    //     if (hour < 6 || hour >= 10) return false;
+                    //     break;
                     case "Lunch (11 AM-2 PM)":
                         if (hour < 11 || hour >= 14) return false;
                         break;
@@ -239,16 +239,16 @@ export default function ReservationTable({ idRestaurant, filters }: Props) {
                     <div>
                         <h3 className="text-lg font-bold">All Reservations</h3>
                     </div>
-                    <div className="flex space-x-2">
-                        <button className="text-sm bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg flex items-center transition">
-                            <i className="fa-solid fa-download mr-2"></i>
-                            Export
-                        </button>
-                        <button className="text-sm bg-primary text-white hover:bg-primary/90 px-4 py-2 rounded-lg flex items-center transition">
-                            <i className="fa-solid fa-plus mr-2"></i>
-                            Add New
-                        </button>
-                    </div>
+                    {/* <div className="flex space-x-2"> */}
+                    {/*     <button className="text-sm bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg flex items-center transition"> */}
+                    {/*         <i className="fa-solid fa-download mr-2"></i> */}
+                    {/*         Export */}
+                    {/*     </button> */}
+                    {/*     <button className="text-sm bg-primary text-white hover:bg-primary/90 px-4 py-2 rounded-lg flex items-center transition"> */}
+                    {/*         <i className="fa-solid fa-plus mr-2"></i> */}
+                    {/*         Add New */}
+                    {/*     </button> */}
+                    {/* </div> */}
                 </div>
                 <div className="overflow-x-auto">
                     {loading ? (

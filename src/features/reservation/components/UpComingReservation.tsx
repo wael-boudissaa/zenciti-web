@@ -42,7 +42,6 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
         return { badge: formatDate(dateStr), badgeColor: "bg-gray-100 text-gray-800" };
     }
 
-    // Fallback avatar (initials)
     function getAvatar(first: string, last: string) {
         return `https://ui-avatars.com/api/?name=${encodeURIComponent(first + " " + last)}&background=E6F4F1&color=00674B`;
     }
@@ -52,10 +51,7 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
             <div className="p-5 border-b border-gray-100 flex justify-between items-center">
                 <div>
                     <h3 className="text-lg font-bold">Upcoming Reservations</h3>
-                    <p className="text-sm text-gray-500">Next 7 days</p>
-                </div>
-                <div>
-                    <button className="text-sm text-primary font-medium hover:underline">View All</button>
+                    <p className="text-sm text-gray-500">Next month</p>
                 </div>
             </div>
             <div className="p-5">
@@ -66,7 +62,6 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {reservations.map((r, i) => {
-                            // Use correct fallback and map API fields to card fields
                             const { badge, badgeColor } = getBadge(r.date);
                             return (
                                 <div key={r.idReservation} className="border rounded-lg p-4 hover:shadow-md transition">
@@ -75,11 +70,9 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
                                             <img className="h-10 w-10 rounded-full mr-3" src={getAvatar(r.firstName, r.lastName)} alt="Avatar" />
                                             <div>
                                                 <div className="font-medium">{r.firstName} {r.lastName}</div>
-                                                {/* Phone not in API so we skip it or show N/A */}
-                                                {/* <div className="text-sm text-gray-500">{r.phone || "N/A"}</div> */}
                                             </div>
                                         </div>
-                                        <span className={`px-2 py-1 text-xs rounded-full font-medium ${badgeColor}`}>{badge}</span>
+                                        {/* <span className={`px-2 py-1 text-xs rounded-full font-medium ${badgeColor}`}>{badge}</span> */}
                                     </div>
                                     <div className="grid grid-cols-3 gap-3 mb-3">
                                         <div className="bg-gray-50 rounded p-2">
@@ -94,11 +87,6 @@ export default function UpcomingReservations({ idRestaurant }: { idRestaurant: s
                                             <p className="text-xs text-gray-500">Guests</p>
                                             <p className="font-medium">{r.numberPeople || r.numberOfPeople} people</p>
                                         </div>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <span className="bg-light text-primary text-sm font-medium px-3 py-1 rounded-full">
-                                            Table #{r.idTable?.replace(/[^0-9]/g, "") || "there is no table assigned"}
-                                        </span>
                                     </div>
                                 </div>
                             );

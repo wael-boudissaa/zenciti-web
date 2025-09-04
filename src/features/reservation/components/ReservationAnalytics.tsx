@@ -6,14 +6,14 @@ import {
   Tooltip,
   Legend
 } from "chart.js";
-import type { HourlyStats, StatusStats } from "../hooks/hoos_order_page";
+import type { HourlyReservationStats, StatusReservationStats } from "../hooks/hook_reservation_stats";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface Props {
   loading: boolean;
-  hourlyStats?: HourlyStats;
-  statusStats?: StatusStats;
+  hourlyStats?: HourlyReservationStats;
+  statusStats?: StatusReservationStats;
 }
 
 const hours = [
@@ -22,13 +22,14 @@ const hours = [
 ];
 
 const COLORS: Record<string, string> = {
-  completed: "#022c22",
+  confirmed: "#022c22",
   pending: "#F59E0B",
   cancelled: "#EF4444",
+  completed: "#10B981",
   default: "#3B82F6",
 };
 
-const OrderAnalytics: React.FC<Props> = ({ loading, hourlyStats, statusStats }) => {
+const ReservationAnalytics: React.FC<Props> = ({ loading, hourlyStats, statusStats }) => {
   const maxCount = Math.max(...hours.map(h => hourlyStats?.[h] || 0), 1);
 
   const statusLabels = statusStats ? Object.keys(statusStats) : [];
@@ -60,10 +61,10 @@ const OrderAnalytics: React.FC<Props> = ({ loading, hourlyStats, statusStats }) 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      {/* Hourly Order Overview */}
+      {/* Hourly Reservation Overview */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="font-bold text-lg">Order Overview</h3>
+          <h3 className="font-bold text-lg">Reservation Overview</h3>
         </div>
         <div className="h-[300px] flex flex-col justify-end items-center">
           <div className="w-full flex items-end h-40">
@@ -74,7 +75,7 @@ const OrderAnalytics: React.FC<Props> = ({ loading, hourlyStats, statusStats }) 
                   key={h}
                   className="flex-1 mx-1 bg-primary rounded"
                   style={{ height: `${(value / maxCount) * 100}%`, minHeight: 2 }}
-                  title={`${h}:00 - ${value} orders`}
+                  title={`${h}:00 - ${value} reservations`}
                 ></div>
               );
             })}
@@ -87,16 +88,20 @@ const OrderAnalytics: React.FC<Props> = ({ loading, hourlyStats, statusStats }) 
         </div>
       </div>
 
-      {/* Order Status Distribution (Doughnut Chart) */}
+      {/* Reservation Status Distribution (Doughnut Chart) */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="font-bold text-lg">Order Distribution</h3>
+          <h3 className="font-bold text-lg">Reservation Distribution</h3>
         </div>
         <div className="h-[300px]">
-          {statusStats ? (
+          {statusStats && Object.keys(statusStats).length > 0 ? (
             <Doughnut data={doughnutData} options={doughnutOptions} />
           ) : (
-            <p className="text-gray-400 text-sm text-center mt-24">No status data available</p>
+            <div className="flex items-center justify-center h-full">
+              <p className="text-gray-400 text-sm text-center">
+                {loading ? "Loading..." : "No reservation data available"}
+              </p>
+            </div>
           )}
         </div>
       </div>
@@ -104,5 +109,4 @@ const OrderAnalytics: React.FC<Props> = ({ loading, hourlyStats, statusStats }) 
   );
 };
 
-export default OrderAnalytics;
-
+export default ReservationAnalytics;

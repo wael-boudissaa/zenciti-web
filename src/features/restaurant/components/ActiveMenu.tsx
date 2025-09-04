@@ -32,9 +32,6 @@ export const ActiveMenuContent = ({ activeMenu, onEditMenu, onStatusChange }) =>
                     <p className="text-gray-500 text-sm">Currently active menu</p>
                 </div>
                 <div className="flex space-x-2">
-                    <button className="px-4 py-2 bg-accent text-white rounded-lg text-sm">
-                        <i className="fa-solid fa-plus mr-1"></i> Add Item
-                    </button>
                     <button className="px-4 py-2 bg-primary text-white rounded-lg text-sm" onClick={onEditMenu}>
                         <i className="fa-solid fa-pen-to-square mr-1"></i> Edit Menu
                     </button>

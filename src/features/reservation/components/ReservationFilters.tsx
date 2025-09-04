@@ -62,8 +62,6 @@ export default function ReservationFilters({ onFiltersChange }: ReservationFilte
             <option value="Today">Today</option>
             <option value="Tomorrow">Tomorrow</option>
             <option value="This Week">This Week</option>
-            <option value="Next Week">Next Week</option>
-            <option value="Custom Range">Custom Range</option>
           </select>
         </div>
         <div>
@@ -77,23 +75,23 @@ export default function ReservationFilters({ onFiltersChange }: ReservationFilte
             <option value="Confirmed">Confirmed</option>
             <option value="Pending">Pending</option>
             <option value="Cancelled">Cancelled</option>
-            <option value="Completed">Completed</option>
+            {/* <option value="Completed">Completed</option> */}
           </select>
         </div>
-        <div>
-          <label className="block text-sm text-gray-600 mb-1">Table Size</label>
-          <select 
-            value={filters.tableSize}
-            onChange={(e) => handleFilterChange('tableSize', e.target.value)}
-            className="w-full rounded-lg border-gray-300 bg-gray-50 py-2 px-3 text-sm focus:border-primary focus:ring-primary"
-          >
-            <option value="All Sizes">All Sizes</option>
-            <option value="1-2 People">1-2 People</option>
-            <option value="3-4 People">3-4 People</option>
-            <option value="5-6 People">5-6 People</option>
-            <option value="7+ People">7+ People</option>
-          </select>
-        </div>
+        {/* <div> */}
+        {/*   <label className="block text-sm text-gray-600 mb-1">Table Size</label> */}
+        {/*   <select  */}
+        {/*     value={filters.tableSize} */}
+        {/*     onChange={(e) => handleFilterChange('tableSize', e.target.value)} */}
+        {/*     className="w-full rounded-lg border-gray-300 bg-gray-50 py-2 px-3 text-sm focus:border-primary focus:ring-primary" */}
+        {/*   > */}
+        {/*     <option value="All Sizes">All Sizes</option> */}
+        {/*     <option value="1-2 People">1-2 People</option> */}
+        {/*     <option value="3-4 People">3-4 People</option> */}
+        {/*     <option value="5-6 People">5-6 People</option> */}
+        {/*     <option value="7+ People">7+ People</option> */}
+        {/*   </select> */}
+        {/* </div> */}
         <div>
           <label className="block text-sm text-gray-600 mb-1">Time Slot</label>
           <select 
@@ -102,7 +100,6 @@ export default function ReservationFilters({ onFiltersChange }: ReservationFilte
             className="w-full rounded-lg border-gray-300 bg-gray-50 py-2 px-3 text-sm focus:border-primary focus:ring-primary"
           >
             <option value="All Times">All Times</option>
-            <option value="Breakfast (6-10 AM)">Breakfast (6-10 AM)</option>
             <option value="Lunch (11 AM-2 PM)">Lunch (11 AM-2 PM)</option>
             <option value="Dinner (5-10 PM)">Dinner (5-10 PM)</option>
           </select>
