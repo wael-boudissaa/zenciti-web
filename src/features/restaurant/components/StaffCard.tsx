@@ -22,19 +22,11 @@ const StaffCard = ({ staff, onViewReview }) => (
                     alt={staff.firstName + " " + staff.lastName}
                     className="w-20 h-20 rounded-full border-4 border-white shadow-lg object-cover"
                 />
-                <span
-                    className={`absolute -bottom-2 right-0 px-3 py-0.5 rounded-full text-xs font-medium border ${statusColors[staff.status] || "bg-gray-100 text-gray-500 border-gray-200"}`}
-                >
-                    {staff.status ? staff.status.charAt(0).toUpperCase() + staff.status.slice(1) : "Unknown"}
-                </span>
-            </div>
-            <div className="absolute top-4 right-4 flex gap-2">
-                <button className="bg-white p-2 rounded-full text-gray-500 hover:text-green-900 border border-gray-200 shadow-sm transition">
-                    <i className="fa-solid fa-pencil"></i>
-                </button>
-                <button className="bg-white p-2 rounded-full text-gray-500 hover:text-red-500 border border-gray-200 shadow-sm transition">
-                    <i className="fa-solid fa-trash"></i>
-                </button>
+                {/* <span */}
+                {/*     className={`absolute -bottom-2 right-0 px-3 py-0.5 rounded-full text-xs font-medium border ${statusColors[staff.status] || "bg-gray-100 text-gray-500 border-gray-200"}`} */}
+                {/* > */}
+                {/*     {staff.status ? staff.status.charAt(0).toUpperCase() + staff.status.slice(1) : "Unknown"} */}
+                {/* </span> */}
             </div>
         </div>
 

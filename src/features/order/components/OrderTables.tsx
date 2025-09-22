@@ -23,16 +23,16 @@ const OrdersTable: React.FC<Props> = ({ loading, recentOrders }) => {
                 <div className="flex justify-between items-center">
                     <h3 className="font-bold text-lg">Recent Orders</h3>
                     <div className="flex space-x-2">
-                        <div className="relative">
-                            <i className="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            <input
-                                type="text"
-                                placeholder="Search orders..."
-                                className="pl-10 pr-4 py-2 border rounded-lg text-sm w-64"
-                                value={search}
-                                onChange={e => setSearch(e.target.value)}
-                            />
-                        </div>
+                        {/* <div className="relative"> */}
+                        {/*     <i className="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i> */}
+                        {/*     <input */}
+                        {/*         type="text" */}
+                        {/*         placeholder="Search orders..." */}
+                        {/*         className="pl-10 pr-4 py-2 border rounded-lg text-sm w-64" */}
+                        {/*         value={search} */}
+                        {/*         onChange={e => setSearch(e.target.value)} */}
+                        {/*     /> */}
+                        {/* </div> */}
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@ const OrdersTable: React.FC<Props> = ({ loading, recentOrders }) => {
                                     <td className="px-6 py-4 whitespace-nowrap">{o.firstName} {o.lastName}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                                         {new Date(o.timeFrom).toLocaleDateString()}<br />
-                                        <span className="text-gray-500">{new Date(o.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                                        <span className="text-gray-500">{new Date(o.timeFrom).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                                         <span className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">

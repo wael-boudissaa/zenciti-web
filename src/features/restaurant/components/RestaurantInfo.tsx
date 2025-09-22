@@ -73,14 +73,6 @@ export const RestaurantInfoCard: React.FC<RestaurantInfoCardProps> = ({ idRestau
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Cuisine Type
-                                </label>
-                                <p className="text-gray-800">
-                                    {info.cuisineType || "Not specified"}
-                                </p>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Location
                                 </label>
                                 <p className="text-gray-800">{info.location}</p>

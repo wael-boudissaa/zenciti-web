@@ -112,16 +112,16 @@ const OrderSummary: React.FC<Props> = ({ order, loading }) => {
                             <span className="font-bold">${order.totalPrice.toFixed(2)}</span>
                         </div>
                     </div>
-                    <div className="space-y-3">
-                        <button className="w-full bg-primary text-white py-2 rounded-lg flex items-center justify-center">
-                            <i className="fa-solid fa-print mr-2"></i>
-                            Print Receipt
-                        </button>
-                        <button className="w-full border border-primary text-primary py-2 rounded-lg flex items-center justify-center">
-                            <i className="fa-solid fa-envelope mr-2"></i>
-                            Email Receipt
-                        </button>
-                    </div>
+                    {/* <div className="space-y-3"> */}
+                    {/*     <button className="w-full bg-primary text-white py-2 rounded-lg flex items-center justify-center"> */}
+                    {/*         <i className="fa-solid fa-print mr-2"></i> */}
+                    {/*         Print Receipt */}
+                    {/*     </button> */}
+                    {/*     <button className="w-full border border-primary text-primary py-2 rounded-lg flex items-center justify-center"> */}
+                    {/*         <i className="fa-solid fa-envelope mr-2"></i> */}
+                    {/*         Email Receipt */}
+                    {/*     </button> */}
+                    {/* </div> */}
                 </div>
             </div>
         </div>

@@ -17,7 +17,6 @@ export const TopStaffCard: React.FC<TopStaffType> = ({ loading, error, staffRows
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
             <div className="p-6 border-b border-gray-200 flex justify-between items-center">
                 <h3 className="font-bold text-lg">Top Staff</h3>
-                <button className="text-primary hover:underline text-sm">View All</button>
             </div>
             <div className="p-6">
                 <div className="space-y-4">

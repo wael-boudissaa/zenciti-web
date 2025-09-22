@@ -38,7 +38,7 @@ const OrdersPage: React.FC = () => {
                 <Header />
                 <div className="p-6">
                     <OrderStats loading={loading} statusStats={stats?.statusStats} />
-                    {/* <OrderAnalytics loading={loading} hourlyStats={stats?.hourlyStats} statusStats={stats?.statusStats} /> */}
+                    <OrderAnalytics loading={loading} hourlyStats={stats?.hourlyStats} statusStats={stats?.statusStats} />
                     <OrdersTable loading={loading} recentOrders={stats?.recentOrders || []} />
                     <PopularItems idRestaurant={idRestaurant} />
                 </div>

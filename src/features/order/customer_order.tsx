@@ -5,29 +5,35 @@ import Header from "../../components/Header/Header";
 import CustomerProfile from "./components/CustomerProfile";
 import CustomerOrderHistory from "./components/CustomerOrderHistory";
 import FavoriteItems from "./components/FavoriteItems";
-import { getCustomerOrderInformation, type Order, type Profile } from "./hooks/hook_order";
+import { getCustomerOrderInformation, type Order, type Profile, type FrequentlyOrderedItem } from "./hooks/hook_order";
+import { useAuth } from "../../app/context";
 
 const CustomerOrderDetailsPage: React.FC = () => {
     const { idClient } = useParams<{ idClient: string }>();
+    const { idRestaurant } = useAuth();
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState<Profile | null>(null);
     const [orders, setOrders] = useState<Order[]>([]);
     const [totalSpent, setTotalSpent] = useState<number>(0);
     const [totalOrders, setTotalOrders] = useState<number>(0);
     const [firstOrderDate, setFirstOrderDate] = useState<string>("");
+    const [averageRating, setAverageRating] = useState<number>(0);
+    const [frequentlyOrderedItems, setFrequentlyOrderedItems] = useState<FrequentlyOrderedItem[]>([]);
 
     useEffect(() => {
         if (!idClient) return;
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await getCustomerOrderInformation(idClient);
+                const response = await getCustomerOrderInformation(idClient, idRestaurant);
                 if (response) {
                     setProfile(response.Profile);
                     setOrders(response.Orders);
                     setTotalSpent(response.TotalSpent);
                     setTotalOrders(response.TotalOrders);
                     setFirstOrderDate(response.FirstOrderDate);
+                    setAverageRating(response.AverageRating);
+                    setFrequentlyOrderedItems(response.FrequentlyOrderedItems || []);
                 }
             } catch (e) {
                 console.error("Error fetching customer order details:", e);
@@ -35,7 +41,7 @@ const CustomerOrderDetailsPage: React.FC = () => {
             setLoading(false);
         };
         fetchData();
-    }, [idClient]);
+    }, [idClient, idRestaurant]);
 
     return (
         <div className="font-sans bg-gray-100 text-gray-800 flex">
@@ -51,9 +57,10 @@ const CustomerOrderDetailsPage: React.FC = () => {
                                 totalOrders={totalOrders}
                                 totalSpent={totalSpent}
                                 firstOrderDate={firstOrderDate}
+                                averageRating={averageRating}
                             />
                             <CustomerOrderHistory orders={orders} />
-                            <FavoriteItems />
+                            <FavoriteItems items={frequentlyOrderedItems} />
                         </>
                     )}
                 </div>

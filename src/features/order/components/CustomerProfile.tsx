@@ -11,9 +11,10 @@ interface ProfileProps {
     totalOrders: number;
     totalSpent: number;
     firstOrderDate: string;
+    averageRating: number;
 }
 
-const CustomerProfile: React.FC<ProfileProps> = ({ profile, totalOrders, totalSpent, firstOrderDate }) => {
+const CustomerProfile: React.FC<ProfileProps> = ({ profile, totalOrders, totalSpent, firstOrderDate, averageRating }) => {
     return (
         <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
             <div className="flex items-center">
@@ -73,14 +74,25 @@ const CustomerProfile: React.FC<ProfileProps> = ({ profile, totalOrders, totalSp
                         <h3 className="font-medium">Avg. Rating</h3>
                     </div>
                     <div className="flex items-center">
-                        <p className="text-2xl font-bold mr-2">4.8</p>
-                        <div className="flex text-yellow-400">
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star-half-alt"></i>
-                        </div>
+                        <p className="text-2xl font-bold mr-2">{averageRating > 0 ? averageRating.toFixed(1) : "N/A"}</p>
+                        {averageRating > 0 ? (
+                            <div className="flex text-yellow-400">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <i
+                                        key={star}
+                                        className={`fa-solid ${
+                                            star <= averageRating
+                                                ? "fa-star"
+                                                : star - 0.5 <= averageRating
+                                                    ? "fa-star-half-alt"
+                                                    : "fa-star text-gray-300"
+                                        }`}
+                                    ></i>
+                                ))}
+                            </div>
+                        ) : (
+                            <span className="text-sm text-gray-500">No ratings yet</span>
+                        )}
                     </div>
                 </div>
             </div>

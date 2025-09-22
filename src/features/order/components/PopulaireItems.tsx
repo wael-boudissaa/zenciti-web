@@ -29,14 +29,6 @@ const PopularItems = ({ idRestaurant }) => {
             <div className="p-6 border-b">
                 <div className="flex justify-between items-center">
                     <h3 className="font-bold text-lg">Popular Menu Items</h3>
-                    <select
-                        className="text-sm border rounded-lg px-3 py-2 bg-gray-50"
-                        value={period}
-                        onChange={(e) => setPeriod(e.target.value)}
-                        disabled
-                    >
-                        <option value="today">Today</option>
-                    </select>
                 </div>
             </div>
             <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -66,7 +58,7 @@ const PopularItems = ({ idRestaurant }) => {
                             </div>
                             <div className="flex justify-between text-sm mt-1">
                                 <span className="text-gray-600">Orders:</span>
-                                <span className="font-medium">{item.total} today</span>
+                                <span className="font-medium">{item.total} ordered</span>
                             </div>
                         </div>
                     ))

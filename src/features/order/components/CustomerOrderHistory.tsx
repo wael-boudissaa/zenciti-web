@@ -11,6 +11,7 @@ type Order = {
     idOrder: string;
     createdAt: string;
     status: string;
+    reservationTime: string;
     foodItems: FoodItem[];
     totalPrice: number;
 };
@@ -34,16 +35,16 @@ const CustomerOrderHistory: React.FC<CustomerOrderHistoryProps> = ({ orders }) =
                 <div className="flex justify-between items-center">
                     <h3 className="font-bold text-lg">Order History</h3>
                     <div className="flex space-x-2">
-                        <div className="relative">
-                            <i className="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            <input type="text" placeholder="Search orders..." className="pl-10 pr-4 py-2 border rounded-lg text-sm w-64" />
-                        </div>
-                        <select className="text-sm border rounded-lg px-3 py-2 bg-gray-50">
-                            <option>All Orders</option>
-                            <option>Completed</option>
-                            <option>Processing</option>
-                            <option>Cancelled</option>
-                        </select>
+                        {/* <div className="relative"> */}
+                        {/*     <i className="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i> */}
+                        {/*     <input type="text" placeholder="Search orders..." className="pl-10 pr-4 py-2 border rounded-lg text-sm w-64" /> */}
+                        {/* </div> */}
+                        {/* <select className="text-sm border rounded-lg px-3 py-2 bg-gray-50"> */}
+                        {/*     <option>All Orders</option> */}
+                        {/*     <option>Completed</option> */}
+                        {/*     <option>Processing</option> */}
+                        {/*     <option>Cancelled</option> */}
+                        {/* </select> */}
                     </div>
                 </div>
             </div>
@@ -66,9 +67,9 @@ const CustomerOrderHistory: React.FC<CustomerOrderHistoryProps> = ({ orders }) =
                                     <span className="font-medium">#{o.idOrder.slice(0, 8).toUpperCase()}</span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                    {(new Date(o.createdAt)).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                    {(new Date(o.reservationTime)).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                                     <br />
-                                    <span className="text-gray-500">{(new Date(o.createdAt)).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}</span>
+                                    <span className="text-gray-500">{(new Date(o.reservationTime)).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}</span>
                                 </td>
                                 <td className="px-6 py-4">
                                     {o.foodItems.map((item, idx) => (

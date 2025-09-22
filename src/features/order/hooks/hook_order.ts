@@ -10,6 +10,7 @@ export interface Order {
     idOrder: string;
     createdAt: string;
     status: string;
+    reservationTime: string;
     foodItems: FoodItem[];
     totalPrice: number;
 }
@@ -29,12 +30,23 @@ export interface Profile {
     phone: string;
 }
 
+export interface FrequentlyOrderedItem {
+    idFood: string;
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+    totalOrdered: number;
+}
+
 export interface CustomerOrderInformation {
     Profile: Profile;
     Orders: Order[];
     TotalSpent: number;
     TotalOrders: number;
     FirstOrderDate: string;
+    AverageRating: number;
+    FrequentlyOrderedItems: FrequentlyOrderedItem[];
 }
 export type FoodItems = {
     idFood: string;
@@ -65,8 +77,11 @@ export interface CustomerOrderInformationResponse {
     data: CustomerOrderInformation;
     status: number;
 }
-export function getCustomerOrderInformation(idClient: string) {
-    return apiGet<CustomerOrderInformation>(`/waela/${idClient}`);
+export function getCustomerOrderInformation(idClient: string, idRestaurant?: string) {
+    const url = idRestaurant
+        ? `/client/${idClient}/details?restaurantId=${idRestaurant}`
+        : `/client/${idClient}/details`;
+    return apiGet<CustomerOrderInformation>(url);
 }
 export function getPopularFood(idRestaurant: string) {
     return apiGet<PopulaireFood[]>(`/restaurant/food/populair/${idRestaurant}`);

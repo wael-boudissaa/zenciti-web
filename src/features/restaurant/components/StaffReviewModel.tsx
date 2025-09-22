@@ -89,9 +89,9 @@ export const WorkerProfileCard = ({
                                     <h2 className="text-2xl font-bold text-gray-800">
                                         {worker.firstName} {worker.lastName}
                                     </h2>
-                                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${worker.status === "active" ? "bg-primary100 text-green-700" : "bg-gray-200 text-gray-500"}`}>
-                                        {worker.status === "active" ? "Active" : "Inactive"}
-                                    </span>
+                                    {/* <span className={`px-2 py-0.5 rounded text-xs font-semibold ${worker.status === "active" ? "bg-primary100 text-green-700" : "bg-gray-200 text-gray-500"}`}> */}
+                                    {/*     {worker.status === "active" ? "Active" : "Inactive"} */}
+                                    {/* </span> */}
                                 </div>
                                 <div className="flex items-center space-x-3 mb-2">
                                     <span className="text-yellow-500 flex items-center">

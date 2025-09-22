@@ -64,7 +64,6 @@ export const CreateFoodModal = ({
         setUploading(true);
 
         const formData = new FormData();
-        formData.append("idRestaurant", idRestaurant);
         formData.append("idCategory", form.idCategory);
         formData.append("idRestaurant", idRestaurant);
         formData.append("name", form.name);

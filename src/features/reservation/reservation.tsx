@@ -46,7 +46,7 @@ export default function ReservationsPage() {
                 <Header />
                 <div className="p-6">
                     <ReservationStats loading={loading} idRestaurant={idRestaurant} />
-                    <ReservationAnalytics loading={loading} hourlyStats={analytics?.hourlyStats} statusStats={analytics?.statusStats} />
+                    {/* <ReservationAnalytics loading={loading} hourlyStats={analytics?.hourlyStats} statusStats={analytics?.statusStats} /> */}
                     {/* <ReservationFilters onFiltersChange={handleFiltersChange} /> */}
                     <ReservationTable idRestaurant={idRestaurant} filters={filters} />
                     <UpcomingReservations idRestaurant={idRestaurant} />

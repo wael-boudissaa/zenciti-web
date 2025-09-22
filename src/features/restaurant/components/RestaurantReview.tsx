@@ -57,7 +57,6 @@ export const RecentReviews: React.FC<RecentReviewsProps> = ({ idRestaurant }) =>
                     <h3 className="font-bold text-lg">Recent Reviews</h3>
                     <p className="text-gray-500 text-sm">Latest customer feedback</p>
                 </div>
-                <button className="text-primary hover:underline text-sm">View All</button>
             </div>
             <div className="p-6">
                 <div className="space-y-6">

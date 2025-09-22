@@ -28,6 +28,6 @@ export interface OrdersStatsResponse {
 
 
 export function getRestaurantOrderInformation(idRestaurant: string) {
-    return apiGet<OrdersStatsResponse>(`/wael/${idRestaurant}`);
+    return apiGet<OrdersStatsResponse>(`/restaurant/${idRestaurant}/order-stats`);
 }
 

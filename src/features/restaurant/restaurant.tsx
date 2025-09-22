@@ -50,7 +50,7 @@ const RestaurantProfilePage: React.FC = () => {
             }
             catch (err: any) {
                 // Don't show error for NULL rating data cases - they're handled in the hook
-                if (err?.message?.includes('converting NULL to float64') || 
+                if (err?.message?.includes('converting NULL to float64') ||
                     err?.message?.includes('overallAverage')) {
                     // Set default stats and don't show error
                     setRestaurantStats({
@@ -84,10 +84,10 @@ const RestaurantProfilePage: React.FC = () => {
                         <div className="lg:col-span-2">
                             <RestaurantInfoCard idRestaurant={idRestaurant} />
                             <RecentReviews idRestaurant={idRestaurant} />
+                            <StaffSection staffRows={staffRows} loading={loading} error={error} />
                         </div>
                         <RestaurantStatsSidebar restaurantStats={restaurantStats} staffRows={staffRows} loading={loading} error={error} />
                     </div>}
-                    {selectedTab == "Profile" && <StaffSection staffRows={staffRows} loading={loading} error={error} />}
                     {selectedTab == "Menu" && <RestaurantMenuPage idRestaurant={idRestaurant} />}
                     {selectedTab == "Staff" && <StaffPage idRestaurant={idRestaurant} />}
                 </div>
